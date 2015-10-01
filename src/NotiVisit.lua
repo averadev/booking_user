@@ -8,9 +8,12 @@
 --componentes 
 require('src.Header')
 require('src.BuildRow')
-local composer = require( "composer" )
+require('src.BuildItem')
 local widget = require( "widget" )
+local composer = require( "composer" )
 local Globals = require('src.resources.Globals')
+local DBManager = require('src.resources.DBManager')
+local RestManager = require('src.resources.RestManager')
 local scene = composer.newScene()
 
 --variables
@@ -26,15 +29,30 @@ fontDefault = "native.systemFont"
 ----elementos
 local svContent
 
+local itemsVisit
+
+local noLeido = {}
+
 ---------------------------------------------------
 ------------------ Funciones ----------------------
 ---------------------------------------------------
 
-function buildVisitItems( event)
+function setItemsNotiVisit( items )
+	if #items > 0 then
+		itemsVisit = items
+		buildVisitItems()
+		deleteLoadingLogin()
+	else
+		getNoContent(svContent,'En este momento no cuentas con mensajes')
+		deleteLoadingLogin()
+	end
+end
+
+function buildVisitItems()
 	
 	yMain = 40
 	
-	for y = 1, 3, 1 do
+	for y = 1, #itemsVisit, 1 do
        --[[ if elements[y].tipo == "3" then
             if not isMessage then 
                 isMessage = true
@@ -43,27 +61,37 @@ function buildVisitItems( event)
             
 			local visit = Visit:new()
 			svContent:insert(visit)
-			--message:build(true, elements[y], imageItems[y])
-			visit:build(true, "hola", "message01.png")
+			visit:build(itemsVisit[y])
 			visit.y = yMain
-			--message.id = elements[y].idRelacional
-			visit.id = 1
+			visit.id = itemsVisit[y].id
 			visit.posci = y
-			--message:addEventListener('tap', markRead)
 			
-            --[[if elements[y].leido == "1" then
-                noLeido[y] = display.newRect( 0, h, 2, 98 )
-                noLeido[y].x = 10
-                noLeido[y].y = yMain - 50
+            if itemsVisit[y].leido == "0" then
+				visit:addEventListener('tap', markRead)
+                noLeido[y] = display.newRect( 0, h, 5, 120 )
+                noLeido[y].x = 12
+                noLeido[y].y = yMain + 60
                 noLeido[y]:setFillColor( .18, .59, 0 )
                 svContent:insert(noLeido[y])
-            end]]
+            end
             yMain = yMain + 130
 		--[[end]]
     end
 	
 end
 
+function markRead( event )
+
+	event.target:removeEventListener('tap', markRead)
+	
+	if noLeido[event.target.posci] then
+		noLeido[event.target.posci]:removeSelf()
+	end
+	
+	RestManager.markMessageRead( event.target.id, 2 )
+	RestManager.getMessageUnRead()
+	
+end
 
 ---------------------------------------------------
 --------------Funciones defaults-------------------
@@ -95,11 +123,13 @@ function scene:create( event )
 		width = intW,
 		height = intH - (h + header.height),
 		horizontalScrollDisabled = true,
-		backgroundColor = { 245/255, 245/255, 245/255 }
+		--backgroundColor = { 245/255, 245/255, 245/255 }
+		backgroundColor = { 44/255, 106/255, 158/255 }
 	}
 	NotiVisitScreen:insert(svContent)
 	
-	buildVisitItems()
+	--buildVisitItems()
+	RestManager.getMessageToVisit()
 	
 end
 
@@ -111,6 +141,7 @@ end
 -- "scene:hide()"
 function scene:hide( event )
    local phase = event.phase
+   deleteLoadingLogin()
    --phase == "will"
    --phase == "did"
 end

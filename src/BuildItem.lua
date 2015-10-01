@@ -191,6 +191,28 @@ function deleteLoadingLogin()
 	end
 end
 
+function getNoContent(obj, txtData)
+		if not grpLoading then
+			grpLoading = display.newGroup()
+			obj:insert(grpLoading)
+			
+			local noData = display.newImage( "img/btn/noData.png" )
+			noData.x = display.contentWidth / 2
+			noData.y = (obj.height / 3) - 35
+			grpLoading:insert(noData) 
+			
+			local title = display.newText( txtData, 0, 30, "Chivo", 16)
+			title:setFillColor( 1 )
+			title.x = display.contentWidth / 2
+			title.y = (obj.height / 3) + 80
+			grpLoading:insert(title) 
+		else
+			grpLoading:removeSelf()
+			grpLoading = nil
+			getNoContent(obj, txtData)
+		end
+	end
+
 
 function sinAction( event )
 	return true

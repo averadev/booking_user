@@ -7,9 +7,12 @@
 
 --componentes 
 require('src.Header')
+require('src.BuildItem')
 local composer = require( "composer" )
 local widget = require( "widget" )
 local Globals = require('src.resources.Globals')
+local DBManager = require('src.resources.DBManager')
+local RestManager = require('src.resources.RestManager')
 local scene = composer.newScene()
 
 --variables
@@ -25,9 +28,21 @@ fontDefault = native.systemFont
 ----elementos
 local svVisit
 
+local idMSG
+
+local itemVisit
+
 ---------------------------------------------------
 ------------------ Funciones ----------------------
 ---------------------------------------------------
+
+function setItemsVisit(item)
+	
+	itemVisit = item
+	getBuildVisitItem()
+	deleteLoadingLogin()
+	
+end
 
 function getBuildVisitItem( event )
 	
@@ -35,7 +50,7 @@ function getBuildVisitItem( event )
 	
 	--svVisit
 	local labelDate = display.newText( {
-        text = "03 de septiembre del 2015",
+        text = itemVisit.fechaFormat,
         x = 452/2 + 20, y = lastY,
         width = 452,
         font = fontDefault, fontSize = 20, align = "left"
@@ -44,7 +59,7 @@ function getBuildVisitItem( event )
     svVisit:insert( labelDate )
 	
 	local labelDateTime = display.newText( {
-        text = "11:40 am",
+        text = itemVisit.hora,
         x = 452/2 - 20, y = lastY,
         width = 452,
         font = fontDefault, fontSize = 20, align = "right"
@@ -62,7 +77,7 @@ function getBuildVisitItem( event )
     svVisit:insert(imgVisit)
 	
 	local labelVisit = display.newText( {
-        text = "Julia Gutierrez",
+        text = itemVisit.nombreVisitante,
         x = 280, y = lastY,
         width = 300,
         font = fontDefault, fontSize = 26, align = "left"
@@ -75,7 +90,7 @@ function getBuildVisitItem( event )
 	local textoMensage = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
 	
 	local labelInfo = display.newText( {
-        text = textoMensage,
+        text = itemVisit.motivo,
 		x = 452/2, y = lastY,
 		width = 452 - 50,
         font = fontDefault, fontSize = 24, align = "left"
@@ -98,6 +113,8 @@ end
 
 -- "scene:create()"
 function scene:create( event )
+	
+	idMSG = event.params.id
 	
 	local screen = self.view
 	
@@ -133,10 +150,13 @@ function scene:create( event )
 		height = intH - ( h + header.height) - 28,
 		horizontalScrollDisabled = true,
 		backgroundColor = { 1 }
+		--backgroundColor = { 44/255, 106/255, 158/255 }
 	}
 	visitScreen:insert(svVisit)
 	
-	getBuildVisitItem()
+	RestManager.getMessageToVisitById(idMSG)
+	
+	--getBuildVisitItem()
 	
 end
 

@@ -7,9 +7,12 @@
 
 --componentes 
 require('src.Header')
+require('src.BuildItem')
 local composer = require( "composer" )
 local widget = require( "widget" )
 local Globals = require('src.resources.Globals')
+local DBManager = require('src.resources.DBManager')
+local RestManager = require('src.resources.RestManager')
 local scene = composer.newScene()
 
 --variables
@@ -25,9 +28,22 @@ fontDefault = native.systemFont
 ----elementos
 local svMessage
 
+local idMSG
+
+local itemAdmin
+
 ---------------------------------------------------
 ------------------ Funciones ----------------------
 ---------------------------------------------------
+
+function setItemsAdmin( item )
+	
+	itemAdmin = item
+	getBuildMessageItem()
+	deleteLoadingLogin()
+	
+end
+
 
 function getBuildMessageItem( event )
 	
@@ -35,7 +51,7 @@ function getBuildMessageItem( event )
 	
 	--svMessage
 	local labelDate = display.newText( {
-        text = "03 de septiembre del 2015",
+        text = itemAdmin.dia .. ", " .. itemAdmin.fechaFormat .. " " .. itemAdmin.hora,
         x = 452/2 - 20, y = lastY,
         width = 452,
         font = fontDefault, fontSize = 20, align = "right"
@@ -53,7 +69,7 @@ function getBuildMessageItem( event )
     svMessage:insert(imgMessage)
 	
 	local labelSubject = display.newText( {
-        text = "Asunto: \nTrabajo de mantenimiento sa a",
+        text = "Asunto: \n" .. itemAdmin.asunto,
         x = 280, y = lastY,
         width = 300,
         font = fontDefault, fontSize = 20, align = "left"
@@ -66,7 +82,7 @@ function getBuildMessageItem( event )
 	local textoMensage = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
 	
 	local labelMessage = display.newText( {
-        text = textoMensage,
+        text = itemAdmin.mensaje,
 		x = 452/2, y = lastY,
 		width = 452 - 50,
         font = fontDefault, fontSize = 24, align = "left"
@@ -89,6 +105,8 @@ end
 
 -- "scene:create()"
 function scene:create( event )
+
+	idMSG = event.params.id
 	
 	local screen = self.view
 	
@@ -127,7 +145,9 @@ function scene:create( event )
 	}
 	messageScreen:insert(svMessage)
 	
-	getBuildMessageItem()
+	RestManager.getMessageToAdminById(idMSG)
+	
+	--getBuildMessageItem()
 	
 end
 

@@ -8,9 +8,12 @@
 --componentes 
 require('src.Header')
 require('src.BuildRow')
-local composer = require( "composer" )
+require('src.BuildItem')
 local widget = require( "widget" )
+local composer = require( "composer" )
 local Globals = require('src.resources.Globals')
+local DBManager = require('src.resources.DBManager')
+local RestManager = require('src.resources.RestManager')
 local scene = composer.newScene()
 
 --variables
@@ -26,15 +29,32 @@ fontDefault = "native.systemFont"
 ----elementos
 local svContent
 
+local itemsAdmin
+
+local noLeidoA = {}
+
 ---------------------------------------------------
 ------------------ Funciones ----------------------
 ---------------------------------------------------
+
+function setItemsNotiAdmin( items )
+	
+	if #items > 0 then
+		itemsAdmin = items
+		buildMensageItems()
+		deleteLoadingLogin()
+	else
+		getNoContent(svContent,'En este momento no cuentas con mensajes')
+		deleteLoadingLogin()
+	end
+	
+end
 
 function buildMensageItems( event)
 	
 	yMain = 40
 	
-	for y = 1, 3, 1 do
+	for y = 1, #itemsAdmin, 1 do
        --[[ if elements[y].tipo == "3" then
             if not isMessage then 
                 isMessage = true
@@ -43,27 +63,38 @@ function buildMensageItems( event)
             
 			local message = Message:new()
 			svContent:insert(message)
-			--message:build(true, elements[y], imageItems[y])
-			message:build(true, "hola", "message01.png")
+			message:build(itemsAdmin[y])
 			message.y = yMain
-			--message.id = elements[y].idRelacional
-			message.id = 1
+			message.id = itemsAdmin[y].idXref
 			message.posci = y
-			--message:addEventListener('tap', markRead)
+			message:addEventListener('tap', markReadAdmin)
 			
-            --[[if elements[y].leido == "1" then
-                noLeido[y] = display.newRect( 0, h, 2, 98 )
-                noLeido[y].x = 10
-                noLeido[y].y = yMain - 50
-                noLeido[y]:setFillColor( .18, .59, 0 )
-                svContent:insert(noLeido[y])
-            end]]
+            if itemsAdmin[y].leido == "0" then
+                noLeidoA[y] = display.newRect( 0, h, 5, 98 )
+                noLeidoA[y].x = 12
+                noLeidoA[y].y = yMain + 60
+                noLeidoA[y]:setFillColor( .18, .59, 0 )
+                svContent:insert(noLeidoA[y])
+            end
             yMain = yMain + 110
 		--[[end]]
     end
 	
 end
 
+
+function markReadAdmin( event )
+	
+	event.target:removeEventListener('tap', markReadAdmin)
+	
+	if noLeidoA[event.target.posci] then
+		noLeidoA[event.target.posci]:removeSelf()
+	end
+	
+	RestManager.markMessageRead( event.target.id, 1 )
+	RestManager.getMessageUnRead()
+	
+end
 
 ---------------------------------------------------
 --------------Funciones defaults-------------------
@@ -99,7 +130,8 @@ function scene:create( event )
 	}
 	NotiMessageScreen:insert(svContent)
 	
-	buildMensageItems()
+	RestManager.getMessageToAdmin()
+	--buildMensageItems()
 	
 end
 
@@ -111,6 +143,7 @@ end
 -- "scene:hide()"
 function scene:hide( event )
    local phase = event.phase
+   deleteLoadingLogin()
    --phase == "will"
    --phase == "did"
 end

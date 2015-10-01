@@ -83,20 +83,20 @@ end
 
 --funcion de logeo
 function SignIn()
-	--btnSignLogin:removeEventListener( 'tap', SignIn)
-	--btnSignLogin.alpha = .5
+	btnSignLogin:removeEventListener( 'tap', SignIn)
+	btnSignLogin.alpha = .5
 	if txtSignEmail.text ~= '' and txtSignPassword.text ~= '' then
 		getLoadingLogin(600, "comprobando usuarios")
-		--RestManager.validateUser('conomia_alfredo@hotmail.com','123')
-		RestManager.validateUser(txtSignEmail.text,txtSignPassword.text)
+		RestManager.validateUser('conomia_alfredo@hotmail.com','123')
+		--RestManager.validateUser(txtSignEmail.text,txtSignPassword.text)
 	else
 		
 		getMessageSignIn("Campos vacios", 2)
 		timeMarker = timer.performWithDelay( 2000, function()
 			deleteLoadingLogin()
 			deleteMessageSignIn()
-		--	btnSignLogin:addEventListener( 'tap', SignIn)
-			--btnSignLogin.alpha = 1
+			btnSignLogin:addEventListener( 'tap', SignIn)
+			btnSignLogin.alpha = 1
 		end, 1 )
 	end
 	
@@ -306,7 +306,7 @@ function scene:create( event )
 	
 	local labelWelcomeLogin = display.newText( {   
         x = intW/2, y = lastY, 
-        text = "!BIENVENIDO¡",  font = fontLatoBold, fontSize = 36
+        text = "¡BIENVENIDO!",  font = fontLatoBold, fontSize = 36
 	})
 	labelWelcomeLogin:setFillColor( 1 )
 	groupSign:insert(labelWelcomeLogin)

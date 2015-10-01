@@ -4,9 +4,9 @@ local RestManager = {}
 	local mime = require("mime")
 	local json = require("json")
 	local crypto = require("crypto")
+	local Globals = require('src.resources.Globals')
 	local DBManager = require('src.resources.DBManager')
-    local Globals = require('src.resources.Globals')
-	
+    
 	local settings = DBManager.getSettings()
 	
 	function urlencode(str)
@@ -103,7 +103,174 @@ local RestManager = {}
         network.request( url, "GET", callback ) 
     end
 	
+	--obtiene el numero de mensajes no leidos de visitas
+	RestManager.getMessageUnRead = function()
 	
+		local settings = DBManager.getSettings()
+        -- Set url
+        local url = settings.url
+        url = url.."api/getMessageUnRead/format/json"
+        url = url.."/idApp/"..settings.idApp
+        url = url.."/condominium/"..settings.condominioId
+	
+        local function callback(event)
+            if ( event.isError ) then
+            else
+                local data = json.decode(event.response)
+				if data.success then
+					createNotBubble(data.items, data.items2)
+                else
+                    --native.showAlert( "Go Deals", data.message, { "OK"})
+                end
+            end
+            return true
+        end
+        -- Do request
+        network.request( url, "GET", callback )
+	
+	end
+	
+	--marca el mesaje como leidos
+	RestManager.markMessageRead = function(id, typeM)
+		
+		local settings = DBManager.getSettings()
+        -- Set url
+        local url = settings.url
+        url = url.."api/markMessageRead/format/json"
+        url = url.."/idApp/".. settings.idApp
+        url = url.."/idMSG/".. id
+		url = url.."/typeM/".. typeM
+	
+        local function callback(event)
+            if ( event.isError ) then
+            else
+                
+            end
+            return true
+        end
+        -- Do request
+        network.request( url, "GET", callback )
+		
+	end
+	
+	--obtiene los mensajes de visitantes
+	RestManager.getMessageToVisit = function()
+		
+		getLoadingLogin(400, "Cargando Mensajes")
+		local settings = DBManager.getSettings()
+        -- Set url
+        local url = settings.url
+        url = url.."api/getMessageToVisit/format/json"
+        url = url.."/idApp/"..settings.idApp
+        url = url.."/condominium/"..settings.condominioId
+	
+        local function callback(event)
+            if ( event.isError ) then
+            else
+                local data = json.decode(event.response)
+				if data.success then
+					local items = data.items
+					setItemsNotiVisit(items)
+                else
+                   -- native.showAlert( "Go Deals", data.message, { "OK"})
+                end
+            end
+            return true
+        end
+        -- Do request
+        network.request( url, "GET", callback )
+	
+	end
+	
+	--obtiene el mensaje de visitante por id
+	RestManager.getMessageToVisitById = function(id)
+		
+		getLoadingLogin(400, "Cargando Mensajes")
+		local settings = DBManager.getSettings()
+        -- Set url
+        local url = settings.url
+        url = url.."api/getMessageToVisitById/format/json"
+        url = url.."/idApp/"..settings.idApp
+        url = url.."/idMSG/".. id
+	
+        local function callback(event)
+            if ( event.isError ) then
+            else
+                local data = json.decode(event.response)
+				if data.success then
+					local items = data.items
+					setItemsVisit(items[1])
+                else
+					
+                end
+            end
+            return true
+        end
+        -- Do request
+        network.request( url, "GET", callback )
+		
+	end
+	
+	--obtiene los mensajes de visitantes
+	RestManager.getMessageToAdmin = function()
+	
+		print('hola')
+		
+		getLoadingLogin(400, "Cargando Mensajes")
+		local settings = DBManager.getSettings()
+        -- Set url
+        local url = settings.url
+        url = url.."api/getMessageToAdmin/format/json"
+        url = url.."/idApp/"..settings.idApp
+        url = url.."/condominium/"..settings.condominioId
+	
+        local function callback(event)
+            if ( event.isError ) then
+            else
+                local data = json.decode(event.response)
+				if data.success then
+					print('hola')
+					local items = data.items
+					setItemsNotiAdmin(items)
+                else
+                   -- native.showAlert( "Go Deals", data.message, { "OK"})
+                end
+            end
+            return true
+        end
+        -- Do request
+        network.request( url, "GET", callback )
+	
+	end
+	
+	--obtiene el mensaje de visitante por id
+	RestManager.getMessageToAdminById = function(id)
+		
+		getLoadingLogin(400, "Cargando Mensajes")
+		local settings = DBManager.getSettings()
+        -- Set url
+        local url = settings.url
+        url = url.."api/getMessageToAdminById/format/json"
+        url = url.."/idApp/"..settings.idApp
+        url = url.."/idMSG/".. id
+	
+        local function callback(event)
+            if ( event.isError ) then
+            else
+                local data = json.decode(event.response)
+				if data.success then
+					local items = data.items
+					setItemsAdmin(items[1])
+                else
+					
+                end
+            end
+            return true
+        end
+        -- Do request
+        network.request( url, "GET", callback )
+		
+	end
 	
 	--comprueba si existe conexion a internet
 	function networkConnection()

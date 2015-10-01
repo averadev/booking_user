@@ -9,6 +9,8 @@
 require('src.Header')
 local composer = require( "composer" )
 local Globals = require('src.resources.Globals')
+local DBManager = require('src.resources.DBManager')
+local RestManager = require('src.resources.RestManager')
 --local widget = require( "widget" )
 local scene = composer.newScene()
 
@@ -45,11 +47,12 @@ function scene:create( event )
 	
 	screen:insert(homeScreen)
 	
-	local bgLogin = display.newRect( 0, h, intW, intH )
-	bgLogin.anchorX = 0
-	bgLogin.anchorY = 0
-	bgLogin:setFillColor( 214/255, 226/255, 225/255 )
-	homeScreen:insert(bgLogin)
+	local bgHome = display.newImage( "img/bgk/fondo.png" )
+	bgHome.anchorX = 0
+	bgHome.anchorY = 0
+	bgHome.height = intH - h
+	bgHome.y = h
+	homeScreen:insert(bgHome)
 	--bgLogin:addEventListener( 'tap', shoa )
 	
 	local header = Header:new()
