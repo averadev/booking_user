@@ -87,8 +87,8 @@ function SignIn()
 	btnSignLogin.alpha = .5
 	if txtSignEmail.text ~= '' and txtSignPassword.text ~= '' then
 		getLoadingLogin(600, "comprobando usuarios")
-		RestManager.validateUser('conomia_alfredo@hotmail.com','123')
-		--RestManager.validateUser(txtSignEmail.text,txtSignPassword.text)
+		--RestManager.validateUser('conomia_alfredo@hotmail.com','123')
+		RestManager.validateUser(txtSignEmail.text,txtSignPassword.text)
 	else
 		
 		getMessageSignIn("Campos vacios", 2)

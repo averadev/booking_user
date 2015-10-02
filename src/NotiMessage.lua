@@ -24,7 +24,18 @@ local intW = display.contentWidth
 local intH = display.contentHeight
 local h = display.topStatusBarContentHeight
 
-fontDefault = "native.systemFont"
+fontDefault = native.systemFont
+local fontLatoBold, fontLatoLight, fontLatoRegular
+local environment = system.getInfo( "environment" )
+if environment == "simulator" then
+	fontLatoBold = native.systemFontBold
+	fontLatoLight = native.systemFont
+	fontLatoRegular = native.systemFont
+else
+	fontLatoBold = "Lato-Bold"
+	fontLatoLight = "Lato-Light"
+	fontLatoRegular = "Lato-Regular"
+end
 
 ----elementos
 local svContent
@@ -36,6 +47,11 @@ local noLeidoA = {}
 ---------------------------------------------------
 ------------------ Funciones ----------------------
 ---------------------------------------------------
+
+--obtenemos el homeScreen de la escena
+function getScreenMA()
+	return NotiMessageScreen
+end
 
 function setItemsNotiAdmin( items )
 	
@@ -52,7 +68,7 @@ end
 
 function buildMensageItems( event)
 	
-	yMain = 40
+	yMain = 10
 	
 	for y = 1, #itemsAdmin, 1 do
        --[[ if elements[y].tipo == "3" then
@@ -67,15 +83,21 @@ function buildMensageItems( event)
 			message.y = yMain
 			message.id = itemsAdmin[y].idXref
 			message.posci = y
+			message.pocY = yMain
 			message:addEventListener('tap', markReadAdmin)
 			
+			--[[local imgMsg = display.newImage( "img/btn/message01.png" )
+			imgMsg.x= -177
+			container:insert(imgMsg)]]
+			
             if itemsAdmin[y].leido == "0" then
-                noLeidoA[y] = display.newRect( 0, h, 5, 98 )
-                noLeidoA[y].x = 12
-                noLeidoA[y].y = yMain + 60
-                noLeidoA[y]:setFillColor( .18, .59, 0 )
-                svContent:insert(noLeidoA[y])
+				noLeidoA[y] =  display.newImage( "img/btn/mensaje-nvo.png" )
+			else
+				noLeidoA[y] =  display.newImage( "img/btn/mensaje-leido.png" )
             end
+			noLeidoA[y].x = 62
+			noLeidoA[y].y = yMain + 60
+			svContent:insert(noLeidoA[y])
             yMain = yMain + 110
 		--[[end]]
     end
@@ -89,6 +111,10 @@ function markReadAdmin( event )
 	
 	if noLeidoA[event.target.posci] then
 		noLeidoA[event.target.posci]:removeSelf()
+		noLeidoA[event.target.posci] =  display.newImage( "img/btn/mensaje-leido.png" )
+		noLeidoA[event.target.posci].x = 62
+		noLeidoA[event.target.posci].y = event.target.pocY + 60
+		svContent:insert(noLeidoA[event.target.posci])
 	end
 	
 	RestManager.markMessageRead( event.target.id, 1 )
@@ -110,7 +136,7 @@ function scene:create( event )
 	local bgMessage = display.newRect( 0, h, intW, intH )
 	bgMessage.anchorX = 0
 	bgMessage.anchorY = 0
-	bgMessage:setFillColor( 214/255, 226/255, 225/255 )
+	bgMessage:setFillColor( 245/255, 245/255, 245/255 )
 	NotiMessageScreen:insert(bgMessage)
 	
 	local header = Header:new()

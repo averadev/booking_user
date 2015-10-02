@@ -2,7 +2,7 @@
 ---------------------------------------------------------------------------------
 -- Encabezao general
 ---------------------------------------------------------------------------------
-
+require('src.Menu')
 local composer = require( "composer" )
 local Globals = require('src.resources.Globals')
 local DBManager = require('src.resources.DBManager')
@@ -16,6 +16,7 @@ local groupNoBubbleA, groupNoBubbleV
 local txtNoBubbleA
 local txtNoBubbleV
 local totalBubbleA, totalBubbleV
+local menuScreenLeft = nil
 
 function Header:new()
     -- Variables
@@ -30,6 +31,7 @@ function Header:new()
 		if composer.getSceneName( "current" ) ~= "src.NotiMessage" then
             composer.removeScene("src.NotiMessage")
 			composer.gotoScene( "src.NotiMessage", { time = 400, effect = "slideLeft" })
+			--moveNoBubbleLeft()
         end
 	
 	end
@@ -39,8 +41,66 @@ function Header:new()
 		if composer.getSceneName( "current" ) ~= "src.NotiVisit" then
             composer.removeScene("src.NotiVisit")
 			composer.gotoScene( "src.NotiVisit", { time = 400, effect = "slideLeft" })
+			--moveNoBubbleLeft()
         end
 		
+	end
+	
+	--mostramos el menu izquierdo
+	function showMenuLeft( event )
+		if groupNoBubbleA then groupNoBubbleA.x = 500 end
+		if groupNoBubbleV then groupNoBubbleV.x = 500 end
+		local screen = getScreen()
+		screen.alpha = .5
+		transition.to( screen, { x = 350, time = 400, transition = easing.outExpo } )
+		transition.to( menuScreenLeft, { x = 0, time = 400, transition = easing.outExpo } )
+		screen = nil
+	end
+	
+	--esconde el menuIzquierdo
+	function hideMenuLeft( event )
+		--modalActive = ""
+		
+		local screen = getScreen()
+		screen.alpha = 1
+		transition.to( menuScreenLeft, { x = -480, time = 400, transition = easing.outExpo } )
+		transition.to( screen, { x = 0, time = 400, transition = easing.outExpo } )
+		if groupNoBubbleA then 
+			transition.to( groupNoBubbleA, { x = 0, time = 400, transition = easing.outExpo } )
+		end
+		if groupNoBubbleV then 
+			transition.to( groupNoBubbleV, { x = 0, time = 400, transition = easing.outExpo } )
+		end
+		screen = nil
+		return true
+	end
+	
+	--obtenemos el grupo de cada escena
+	function getScreen()
+		local currentScene = composer.getSceneName( "current" )
+		if currentScene == "src.Home" then
+			return getScreenH()
+		elseif currentScene == "src.Event" then
+			return getScreenMA()
+		elseif currentScene == "src.Coupon" then
+			return getScreenMV()
+		elseif currentScene == "src.Partner" then
+			return getScreenA()
+		elseif currentScene == "src.PartnerList" then
+			return getScreenV()
+		end
+		
+	end
+	
+	function moveNoBubbleLeft()
+		if groupNoBubbleA then 
+			transition.to( groupNoBubbleA, { x = -480, time = 400, transition = easing.outExpo } )
+			groupNoBubbleA.x = 0
+		end
+		if groupNoBubbleV then 
+			transition.to( groupNoBubbleV, { x = -480, time = 400, transition = easing.outExpo } )
+			groupNoBubbleV.x = 0
+		end
 	end
 	
 	--crea las borbujas de mensajes no leidos
@@ -137,6 +197,20 @@ function Header:new()
 		
 	end
 	
+	--cierra la session del usuario
+	function SignOut( event )
+		
+		hideMenuLeft()
+		DBManager.clearUser()
+		Globals.scene = nil
+		Globals.scene = {}
+		composer.removeScene("src.Login")
+		composer.gotoScene( "src.Login", { time = 400, effect = "slideLeft" })
+		
+		return true
+		
+	end
+	
 	---regresamos a la scena anterior
 	function returnScene( event )
 	
@@ -167,37 +241,79 @@ function Header:new()
 		
     end
 	
+	function returnHome( event )
+		
+		Globals.scene = nil
+		Globals.scene = {}
+		composer.gotoScene( "src.Home", { time = 400, effect = "slideRight" })
+		
+	end
+	
     -- Creamos la el toolbar
     function self:buildToolbar(homeScreen)
          
         -- Incluye botones que de se ocultaran en la bus
+		
+		local paint = {
+			type = "gradient",
+			color1 = { 10/255, 49/255, 82/255 },
+			color2 = { 4/255, 35/255, 63/255},
+			direction = "down"
+		}
         
-        local toolbar = display.newRect( 0, 0, display.contentWidth, 80 )
+        local toolbar = display.newRect( 0, 0, display.contentWidth, 63 )
         toolbar.anchorX = 0
         toolbar.anchorY = 0
-        toolbar:setFillColor( .1 )
+        toolbar:setFillColor( 1 )
+		toolbar.fill = paint
         self:insert(toolbar)
 		
-		local iconTool1 = display.newImage( "img/btn/iconMenu.png" )
-        iconTool1:translate( 0, 40 )
-		iconTool1.width = 50
-		iconTool1.height = 50
-		--iconTool1:addEventListener("tap",showMenuLeft)
+		local lineToolbar = display.newRect( 0, 63, display.contentWidth, 2 )
+        lineToolbar.anchorX = 0
+        lineToolbar.anchorY = 0
+        lineToolbar:setFillColor( 213/255, 67/255, 68/255 )
+        self:insert(lineToolbar)
+		
+		local iconTool1 = display.newImage( "img/btn/menu.png" )
+        iconTool1:translate( 40, 30 )
+		iconTool1:addEventListener("tap",showMenuLeft)
         self:insert(iconTool1)
 		
-		local iconTool2 = display.newImage( "img/btn/iconNewspaper.png" )
-        iconTool2:translate( 340, 40 )
-		iconTool2.width = 45
-		iconTool2.height = 45
+		local iconTool2, iconTool3
+		
+		if composer.getSceneName( "current" ) == 'src.NotiMessage' or composer.getSceneName( "current" ) == 'src.Message' then
+			iconTool2 = display.newImage( "img/btn/mensajes-selec.png" )
+		else
+			iconTool2 = display.newImage( "img/btn/mensajes-des.png" )
+		end
+        iconTool2:translate( 340, 35 )
 		iconTool2:addEventListener( "tap",showMessage )
         self:insert(iconTool2)
 		
-		local iconTool3 = display.newImage( "img/btn/iconBell.png" )
-        iconTool3:translate( 430, 40 )
-		iconTool3.width = 45
-		iconTool3.height = 45
+		if composer.getSceneName( "current" ) == 'src.NotiVisit' or composer.getSceneName( "current" ) == 'src.Visit' then
+			iconTool3 = display.newImage( "img/btn/alertas-selec.png" )
+		else
+			iconTool3 = display.newImage( "img/btn/alertas-des.png" )
+		end
+        iconTool3:translate( 430, 35 )
 		iconTool3:addEventListener("tap",showVisit)
         self:insert(iconTool3)
+		
+		local lineIconTool2 = display.newLine( 299, 0, 299, 63 )
+		lineIconTool2:setStrokeColor( 0 )
+		lineIconTool2.strokeWidth = 1
+		self:insert(lineIconTool2)
+		
+		local lineIconTool3 = display.newLine( 391, 0, 391, 63 )
+		lineIconTool3:setStrokeColor( 0 )
+		lineIconTool3.strokeWidth = 1
+		self:insert(lineIconTool3)
+		
+		--creamos la pantalla del menu
+		if menuScreenLeft == nil then
+			menuScreenLeft = MenuLeft:new()
+			menuScreenLeft:builScreenLeft()
+		end
 		
 		RestManager.getMessageUnRead()
         
@@ -208,14 +324,20 @@ function Header:new()
         
 		local hWB = 20
         
-        local menu = display.newRect( 0, 60 + hWB, display.contentWidth, 50 )
+        local menu = display.newRect( 0, 45 + hWB, display.contentWidth, 49 )
         menu.anchorX = 0
         menu.anchorY = 0
         menu:setFillColor( 1 )
         self:insert(menu)
+		
+		local lineMenu = display.newRect( 0, 45 + hWB + 48, display.contentWidth, 1 )
+        lineMenu.anchorX = 0
+        lineMenu.anchorY = 0
+        lineMenu:setFillColor( 236/255, 236/255, 236/255 )
+        self:insert(lineMenu)
         
        txtTitle = display.newText( {
-            x = (display.contentWidth/2), y = 85 + hWB,
+            x = (display.contentWidth/2), y = 67 + hWB,
 			width = 400, align = "center",
             font = "Lato-Light", fontSize = 22, text = texto
         })
@@ -225,35 +347,23 @@ function Header:new()
         local imgBtnBack = display.newImage( "img/btn/iconReturn.png" )
         imgBtnBack.anchorX = 0
         imgBtnBack.x= 25
-        imgBtnBack.y = 85 + hWB
+        imgBtnBack.y = 67 + hWB
         imgBtnBack:addEventListener( "tap", returnScene )
         self:insert( imgBtnBack )
         
-        local txtReturn = display.newText( {
-            x = 90, y = 85 + hWB,
+		local txtReturn = display.newText( {
+            x = 90, y = 67 + hWB,
 			width = 100, align = "center",
             font = "Lato-Bold", fontSize = 14, text = "Regresar"
         })
         txtReturn:setFillColor( 0 )
         self:insert(txtReturn)
 		
-		--[[local imgBtnHome = display.newImage( "img/btn/btnMenuHome.png" )
+		local imgBtnHome = display.newImage( "img/btn/home.png" )
         imgBtnHome.x= 440
-        imgBtnHome.y = 85 + hWB
-		imgBtnHome:setFillColor( .5 )
-        imgBtnHome:addEventListener( "tap", returnHome )
+        imgBtnHome.y = 69 + hWB
+		imgBtnHome:addEventListener( "tap", returnHome )
         self:insert( imgBtnHome )
-        
-        local bgGrad = display.newRect( 0, 105 + hWB, display.contentWidth, 5 )
-        bgGrad.anchorX = 0
-        bgGrad.anchorY = 0
-        bgGrad:setFillColor( {
-            type = 'gradient',
-            color1 = { 1 }, 
-            color2 = { .7 },
-            direction = "bottom"
-        } ) 
-        self:insert(bgGrad)]]
         
     end
 	

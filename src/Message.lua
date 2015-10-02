@@ -24,6 +24,17 @@ local intH = display.contentHeight
 local h = display.topStatusBarContentHeight
 
 fontDefault = native.systemFont
+local fontLatoBold, fontLatoLight, fontLatoRegular
+local environment = system.getInfo( "environment" )
+if environment == "simulator" then
+	fontLatoBold = native.systemFontBold
+	fontLatoLight = native.systemFont
+	fontLatoRegular = native.systemFont
+else
+	fontLatoBold = "Lato-Bold"
+	fontLatoLight = "Lato-Light"
+	fontLatoRegular = "Lato-Regular"
+end
 
 ----elementos
 local svMessage
@@ -35,6 +46,11 @@ local itemAdmin
 ---------------------------------------------------
 ------------------ Funciones ----------------------
 ---------------------------------------------------
+
+--obtenemos el homeScreen de la escena
+function getScreenA()
+	return messageScreen
+end
 
 function setItemsAdmin( item )
 	
@@ -54,25 +70,23 @@ function getBuildMessageItem( event )
         text = itemAdmin.dia .. ", " .. itemAdmin.fechaFormat .. " " .. itemAdmin.hora,
         x = 452/2 - 20, y = lastY,
         width = 452,
-        font = fontDefault, fontSize = 20, align = "right"
+        font = fontLatoLight, fontSize = 20, align = "right"
     })
     labelDate:setFillColor( .58 )
     svMessage:insert( labelDate )
 	
 	lastY = 100
 	
-	local imgMessage = display.newImage( "img/btn/message01.png" )
+	local imgMessage = display.newImage( "img/btn/mensaje-leido.png" )
 	imgMessage.y = lastY
 	imgMessage.x = 75
-	imgMessage.height = 60
-	imgMessage.width = 70
     svMessage:insert(imgMessage)
 	
 	local labelSubject = display.newText( {
         text = "Asunto: \n" .. itemAdmin.asunto,
         x = 280, y = lastY,
         width = 300,
-        font = fontDefault, fontSize = 20, align = "left"
+        font = fontLatoBold, fontSize = 20, align = "left"
     })
     labelSubject:setFillColor( 0 )
     svMessage:insert( labelSubject )
@@ -85,7 +99,7 @@ function getBuildMessageItem( event )
         text = itemAdmin.mensaje,
 		x = 452/2, y = lastY,
 		width = 452 - 50,
-        font = fontDefault, fontSize = 24, align = "left"
+        font = fontLatoRegular, fontSize = 24, align = "left"
     })
     labelMessage:setFillColor( 0 )
     svMessage:insert( labelMessage )
@@ -115,7 +129,7 @@ function scene:create( event )
 	local bgMessage = display.newRect( 0, h, intW, intH )
 	bgMessage.anchorX = 0
 	bgMessage.anchorY = 0
-	bgMessage:setFillColor( 214/255, 226/255, 225/255 )
+	bgMessage:setFillColor( 245/255, 245/255, 245/255 )
 	messageScreen:insert(bgMessage)
 	
 	local header = Header:new()

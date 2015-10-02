@@ -24,6 +24,17 @@ local intH = display.contentHeight
 local h = display.topStatusBarContentHeight
 
 fontDefault = native.systemFont
+local fontLatoBold, fontLatoLight, fontLatoRegular
+local environment = system.getInfo( "environment" )
+if environment == "simulator" then
+	fontLatoBold = native.systemFontBold
+	fontLatoLight = native.systemFont
+	fontLatoRegular = native.systemFont
+else
+	fontLatoBold = "Lato-Bold"
+	fontLatoLight = "Lato-Light"
+	fontLatoRegular = "Lato-Regular"
+end
 
 ----elementos
 local svVisit
@@ -35,6 +46,11 @@ local itemVisit
 ---------------------------------------------------
 ------------------ Funciones ----------------------
 ---------------------------------------------------
+
+--obtenemos el homeScreen de la escena
+function getScreenV()
+	return visitScreen
+end
 
 function setItemsVisit(item)
 	
@@ -53,7 +69,7 @@ function getBuildVisitItem( event )
         text = itemVisit.fechaFormat,
         x = 452/2 + 20, y = lastY,
         width = 452,
-        font = fontDefault, fontSize = 20, align = "left"
+        font = fontLatoLight, fontSize = 20, align = "left"
     })
     labelDate:setFillColor( .58 )
     svVisit:insert( labelDate )
@@ -62,25 +78,23 @@ function getBuildVisitItem( event )
         text = itemVisit.hora,
         x = 452/2 - 20, y = lastY,
         width = 452,
-        font = fontDefault, fontSize = 20, align = "right"
+        font = fontLatoLight, fontSize = 20, align = "right"
     })
     labelDateTime:setFillColor( .58 )
     svVisit:insert( labelDateTime )
 	
 	lastY = 100
 	
-	local imgVisit = display.newImage( "img/btn/iconUserVisit.png" )
+	local imgVisit = display.newImage( "img/btn/visitas.png" )
 	imgVisit.y = lastY
 	imgVisit.x = 70
-	imgVisit.height = 80
-	imgVisit.width = 90
     svVisit:insert(imgVisit)
 	
 	local labelVisit = display.newText( {
         text = itemVisit.nombreVisitante,
         x = 280, y = lastY,
         width = 300,
-        font = fontDefault, fontSize = 26, align = "left"
+        font = fontLatoBold, fontSize = 26, align = "left"
     })
     labelVisit:setFillColor( 0 )
     svVisit:insert( labelVisit )
@@ -93,7 +107,7 @@ function getBuildVisitItem( event )
         text = itemVisit.motivo,
 		x = 452/2, y = lastY,
 		width = 452 - 50,
-        font = fontDefault, fontSize = 24, align = "left"
+        font = fontLatoRegular, fontSize = 24, align = "left"
     })
     labelInfo:setFillColor( 0 )
     svVisit:insert( labelInfo )

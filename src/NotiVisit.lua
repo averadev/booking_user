@@ -37,6 +37,11 @@ local noLeido = {}
 ------------------ Funciones ----------------------
 ---------------------------------------------------
 
+--obtenemos el homeScreen de la escena
+function getScreenMV()
+	return NotiVisitScreen
+end
+
 function setItemsNotiVisit( items )
 	if #items > 0 then
 		itemsVisit = items
@@ -107,7 +112,7 @@ function scene:create( event )
 	local bgMessage = display.newRect( 0, h, intW, intH )
 	bgMessage.anchorX = 0
 	bgMessage.anchorY = 0
-	bgMessage:setFillColor( 214/255, 226/255, 225/255 )
+	bgMessage:setFillColor( 245/255, 245/255, 245/255 )
 	NotiVisitScreen:insert(bgMessage)
 	
 	local header = Header:new()
@@ -124,7 +129,7 @@ function scene:create( event )
 		height = intH - (h + header.height),
 		horizontalScrollDisabled = true,
 		--backgroundColor = { 245/255, 245/255, 245/255 }
-		backgroundColor = { 44/255, 106/255, 158/255 }
+		backgroundColor = { 245/255, 245/255, 245/255 }
 	}
 	NotiVisitScreen:insert(svContent)
 	

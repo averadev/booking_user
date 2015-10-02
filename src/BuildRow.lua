@@ -4,6 +4,19 @@ local intW = display.contentWidth
 local intH = display.contentHeight
 local h = display.topStatusBarContentHeight
 
+fontDefault = native.systemFont
+local fontLatoBold, fontLatoLight, fontLatoRegular
+local environment = system.getInfo( "environment" )
+if environment == "simulator" then
+	fontLatoBold = native.systemFontBold
+	fontLatoLight = native.systemFont
+	fontLatoRegular = native.systemFont
+else
+	fontLatoBold = "Lato-Bold"
+	fontLatoLight = "Lato-Light"
+	fontLatoRegular = "Lato-Regular"
+end
+
 ---------------------------------------------------------------------------------
 -- MESSAGE
 ---------------------------------------------------------------------------------
@@ -53,15 +66,11 @@ function Message:new()
         maxShape:setFillColor( 1 )
         container:insert( maxShape )
 		
-		local imgMsg = display.newImage( "img/btn/message01.png" )
-		imgMsg.x= -177
-        container:insert(imgMsg)
-		
 		 local txtFecha = display.newText( {
 			text = item.dia .. ", " .. item.fechaFormat,
             x = -15, y = -35,
             width = 450,
-            font = "Lato-Regular", fontSize = 12, align = "right",
+            font = fontLatoRegular, fontSize = 12, align = "right",
         })
         txtFecha:setFillColor( 0 )
         container:insert(txtFecha)
@@ -71,7 +80,7 @@ function Message:new()
             text = "DE: ",     
             x = 45, y = -17,
             width = 340,
-            font = "Lato-Bold", fontSize = 16, align = "left"
+            font = fontLatoBold, fontSize = 16, align = "left"
         })
         txtPartner0:setFillColor( 0 )
         container:insert(txtPartner0)
@@ -81,7 +90,7 @@ function Message:new()
 			text = item.nombreAdmin .. " " .. item.apellidosAdmin,
             x = 55, y = -17,
             width = 300,
-            font = "Lato-Bold", fontSize = 16, align = "left"
+            font = fontLatoBold, fontSize = 16, align = "left"
         })
         txtPartner:setFillColor( 0 )
         container:insert(txtPartner)
@@ -90,7 +99,7 @@ function Message:new()
 			text = "Asunto: ",
             x = 45, y = 7,
             width = 340, height = 0,
-            font = "Lato-Bold", fontSize = 15, align = "left"
+            font = fontLatoBold, fontSize = 15, align = "left"
         })
         txtTitle0:setFillColor( 0 )
         container:insert(txtTitle0)
@@ -98,7 +107,7 @@ function Message:new()
         local txtInfo = display.newText( {
             text = item.asunto:sub(1,35).."...",
             x = 35, y = 30, width = 320,
-            font = "Lato-Light", fontSize = 14, align = "left"
+            font = fontLatoLight, fontSize = 14, align = "left"
         })
         txtInfo:setFillColor( .3 )
         container:insert(txtInfo)
@@ -158,11 +167,9 @@ function Visit:new()
         maxShape:setFillColor( 1 )
         container:insert( maxShape )
 		
-		local imgVisit = display.newImage( "img/btn/iconUserVisit.png" )
+		local imgVisit = display.newImage( "img/btn/visitas.png" )
 		imgVisit.x= -177
 		imgVisit.y = 12
-		imgVisit.height = 80
-		imgVisit.width = 90
         container:insert(imgVisit)
 
         -- Agregamos textos
@@ -172,7 +179,7 @@ function Visit:new()
 			text = item.dia .. " " .. item.fechaFormat,
             x = 5, y = -40,
             width = 400,
-            font = "Lato-Bold", fontSize = 12, align = "left"
+            font = fontLatoBold, fontSize = 12, align = "left"
         })
         txtFecha:setFillColor( 0 )
         container:insert(txtFecha)
@@ -182,7 +189,7 @@ function Visit:new()
 			text = item.hora,
             x = 200, y = -40,
             width = 100,
-            font = "Lato-Bold", fontSize = 12, align = "left"
+            font = fontLatoBold, fontSize = 12, align = "left"
         })
         txtHora:setFillColor( 0 )
         container:insert(txtHora)
@@ -191,7 +198,7 @@ function Visit:new()
 			text = item.nombreVisitante:sub(1,25).."...",
             x = 25, y = 0,
             width = 300,
-            font = "Lato-Bold", fontSize = 22, align = "left"
+            font = fontLatoBold, fontSize = 22, align = "left"
         })
         txtVisit:setFillColor( 0 )
         container:insert(txtVisit)
@@ -200,7 +207,7 @@ function Visit:new()
             --text = item.detail:sub(1,42).."...",
 			text = item.motivo:sub(1,45).."...",
             x = 35, y = 32, width = 320,
-            font = "Lato-Light", fontSize = 16, align = "left"
+            font = fontLatoLight, fontSize = 16, align = "left"
         })
         txtInfo:setFillColor( .3 )
         container:insert(txtInfo)
