@@ -31,7 +31,7 @@ function Header:new()
 		if composer.getSceneName( "current" ) ~= "src.NotiMessage" then
             composer.removeScene("src.NotiMessage")
 			composer.gotoScene( "src.NotiMessage", { time = 400, effect = "slideLeft" })
-			--moveNoBubbleLeft()
+			moveNoBubbleLeft()
         end
 	
 	end
@@ -41,7 +41,7 @@ function Header:new()
 		if composer.getSceneName( "current" ) ~= "src.NotiVisit" then
             composer.removeScene("src.NotiVisit")
 			composer.gotoScene( "src.NotiVisit", { time = 400, effect = "slideLeft" })
-			--moveNoBubbleLeft()
+			moveNoBubbleLeft()
         end
 		
 	end
@@ -94,12 +94,32 @@ function Header:new()
 	
 	function moveNoBubbleLeft()
 		if groupNoBubbleA then 
-			transition.to( groupNoBubbleA, { x = -480, time = 400, transition = easing.outExpo } )
-			groupNoBubbleA.x = 0
+			transition.to( groupNoBubbleA, { x = -480, time = 400, transition = easing.outExpo, onComplete=function()
+					groupNoBubbleA.x = 0
+				end
+			})
 		end
 		if groupNoBubbleV then 
-			transition.to( groupNoBubbleV, { x = -480, time = 400, transition = easing.outExpo } )
-			groupNoBubbleV.x = 0
+			transition.to( groupNoBubbleV, { x = -480, time = 400, transition = easing.outExpo, onComplete=function()
+					groupNoBubbleV.x = 0
+				end
+			})
+		end
+	end
+	
+	function moveNoBubbleRight()
+		if groupNoBubbleA then
+			transition.to( groupNoBubbleA, { x = 500, time = 400, transition = easing.outExpo, onComplete=function()
+					groupNoBubbleA.x = 0
+				end
+			})
+		end
+		
+		if groupNoBubbleV then
+			transition.to( groupNoBubbleV, { x = 500, time = 400, transition = easing.outExpo, onComplete=function()
+					groupNoBubbleV.x = 0
+				end
+			})
 		end
 	end
 	
@@ -231,9 +251,11 @@ function Header:new()
 				table.remove(Globals.scene, #Globals.scene)
 			end
 			
+			moveNoBubbleRight()
 			composer.gotoScene( previousScene, { time = 400, effect = "slideRight" })
 			
 		else
+			moveNoBubbleRight()
 			Globals.scene = nil
 			Globals.scene = {}
 			storyboard.gotoScene( "src.Home", { time = 400, effect = "slideRight" })
@@ -242,7 +264,7 @@ function Header:new()
     end
 	
 	function returnHome( event )
-		
+		moveNoBubbleRight()
 		Globals.scene = nil
 		Globals.scene = {}
 		composer.gotoScene( "src.Home", { time = 400, effect = "slideRight" })

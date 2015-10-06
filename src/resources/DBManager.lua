@@ -83,16 +83,16 @@ local dbManager = {}
 	dbManager.insertCondominium = function(items)
 		openConnection( )
 			for i = 1, #items, 1 do
-				local query = "INSERT INTO condominios VALUES ('" .. items[i].condominioId .."', '" .. items[i].nameCondominious .."');"
+				local query = "INSERT INTO condominios VALUES ('" .. items[i].condominioId .."', '" .. items[i].id .."', '" .. items[i].nameCondominious .."');"
 				db:exec( query )
 			end
 		closeConnection( )
 	end
 	
 	--inserta los datos del condominio
-	dbManager.updateCondominioUser = function(condominio)
+	dbManager.updateCondominioUser = function(condominio, idUser)
 		openConnection( )
-        local query = "UPDATE config SET condominioId = '"..condominio.."';"
+        local query = "UPDATE config SET  idApp = '"..idUser.."', condominioId = '"..condominio.."';"
         db:exec( query )
 		closeConnection( )
 	end
@@ -115,7 +115,7 @@ local dbManager = {}
 					" condominioId INTEGER, url TEXT );"
 		db:exec( query )
 		
-		local query = "CREATE TABLE IF NOT EXISTS condominios (id INTEGER, nombre TEXT );"
+		local query = "CREATE TABLE IF NOT EXISTS condominios (id INTEGER, idUser INTEGER, nombre TEXT );"
 		db:exec( query )
 
         -- Return if have connection

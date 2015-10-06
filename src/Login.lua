@@ -87,8 +87,8 @@ function SignIn()
 	btnSignLogin.alpha = .5
 	if txtSignEmail.text ~= '' and txtSignPassword.text ~= '' then
 		getLoadingLogin(600, "comprobando usuarios")
-		--RestManager.validateUser('conomia_alfredo@hotmail.com','123')
-		RestManager.validateUser(txtSignEmail.text,txtSignPassword.text)
+		RestManager.validateUser('conomia_alfredo@hotmail.com','123')
+		--RestManager.validateUser(txtSignEmail.text,txtSignPassword.text)
 	else
 		
 		getMessageSignIn("Campos vacios", 2)
@@ -107,17 +107,8 @@ function ContinueLogin( event )
 	btnContinueLogin:removeEventListener( 'tap', ContinueLogin)
 	btnContinueLogin.alpha = .5
 	if labelComboOpcionCondo.id ~= 0 then
-		getMessageSignIn("Condominio asignado", 1)
-		DBManager.updateCondominioUser(labelComboOpcionCondo.id)
-		timeMarker = timer.performWithDelay( 2000, function()
-			deleteLoadingLogin()
-			deleteMessageSignIn()
-			composer.removeScene("src.Home")
-			composer.gotoScene("src.Home")
-			btnContinueLogin:addEventListener( 'tap', ContinueLogin)
-			btnContinueLogin.alpha = 1
-		end, 1 )
-		
+		getLoadingLogin(600, "Asignando el condominio")
+		RestManager.setIdPlayerUser(labelComboOpcionCondo.id, labelComboOpcionCondo.idUser)
 	else
 		getMessageSignIn("Seleccione un condominio", 2)
 		timeMarker = timer.performWithDelay( 2000, function()
@@ -147,6 +138,13 @@ function goToHomeLogin()
 	composer.gotoScene("src.Home")
 end
 
+function goToHomeLoginCondo()
+	btnContinueLogin:addEventListener( 'tap', SignIn)
+	btnContinueLogin.alpha = 1
+	composer.removeScene("src.Home")
+	composer.gotoScene("src.Home")
+end
+
 function goToSelectCondominiousLogin()
 	settings = DBManager.getSettings()
 	labelInfoLoginCondo.text = "Bienvenido " .. settings.name .. " " .. settings.apellido .. " antes de continuar, por favor selecciona el condominio con el que deseas accesar:"
@@ -159,6 +157,10 @@ function errorLogin()
 	btnSignLogin.alpha = 1
 end
 
+function errorLoginCondo()
+	btnContinueLogin:addEventListener( 'tap', ContinueLogin )
+	btnContinueLogin.alpha = 1
+end
 --[[function SignIn( event)
 	composer.removeScene("src.Home")
 	composer.gotoScene("src.Home")
@@ -172,6 +174,7 @@ function getOptionComboCity( event )
 		event.target:setFillColor( 1 )
 	
 		labelComboOpcionCondo.id = event.target.id
+		labelComboOpcionCondo.idUser = event.target.idUser
 		labelComboOpcionCondo.text = event.target.name
 		hideComboBoxCity()
 	end, 1 )
@@ -195,6 +198,7 @@ function setOptionComboCity()
 		optionCombo[i]:setStrokeColor( 0 )
 		optionCombo[i].name = dataCombo[i].nombre
 		optionCombo[i].id = dataCombo[i].id
+		optionCombo[i].idUser = dataCombo[i].idUser
 		optionCombo[i].num = i
 		svOptionCombo:insert(optionCombo[i])
 		optionCombo[i]:addEventListener( 'tap', getOptionComboCity )
@@ -466,6 +470,7 @@ function scene:create( event )
 	})
 	labelComboOpcionCondo:setFillColor( 0 )
 	labelComboOpcionCondo.id = 0
+	labelComboOpcionCondo.idUser = 0
 	groupSign2:insert(labelComboOpcionCondo)
 	
 	

@@ -5,4 +5,6 @@ return {
     
 	numCondominium = 0,
 	
+	playerIdToken = 0,
+	
 }

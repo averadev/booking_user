@@ -122,6 +122,7 @@ function scene:create( event )
 	
 	local bgPhoto = display.newRect( intW/2, lastY, 300, 350 )
 	bgPhoto.anchorY = 0
+	bgPhoto.anchorY = 0
 	bgPhoto:setFillColor( 1 )
 	bgPhoto:setStrokeColor( 205/255, 205/255, 205/255 )
 	bgPhoto.strokeWidth = 4

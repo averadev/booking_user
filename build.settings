@@ -15,6 +15,21 @@ settings =
 		supported = { "portrait", }
 	},
 	
+	plugins =
+    {
+		["plugin.OneSignal"] =
+		{
+			publisherId = "com.onesignal",
+		},
+		
+		["plugin.google.play.services"] =
+		{
+			publisherId = "com.coronalabs",
+			supportedPlatforms = { android=true, ["android-kindle"]=true },
+		},
+		
+    },
+	
 	excludeFiles =
 	{
 		-- Include only the necessary icon files on each platform
@@ -52,6 +67,8 @@ settings =
 				"Icon-Small-50.png",
 				"Icon-Small-50@2x.png",
 			},
+			
+			UIBackgroundModes = {"remote-notification"},
 
 			--[[
 			-- iOS app URL schemes:
