@@ -64,7 +64,7 @@ function MenuLeft:new()
 			direction = "right"
 		}
 		
-		local bgSignOut = display.newRect( 0, intH-110 + h, 350, 110 )
+		local bgSignOut = display.newRect( 0, intH-90 + h, 350, 90 )
 		bgSignOut.anchorX = 0
         bgSignOut.anchorY = 0
 		bgSignOut:setFillColor( 0 )
@@ -73,7 +73,7 @@ function MenuLeft:new()
 		bgSignOut:addEventListener("tap",SignOut)
 		selfL:insert(bgSignOut)
 	
-		local lineMenu1 = display.newRect( 0, intH - 100, 350, 4 )
+		local lineMenu1 = display.newRect( 0, intH - 89, 350, 4 )
         lineMenu1.anchorX = 0
         lineMenu1.anchorY = 0
         lineMenu1:setFillColor( 195/255, 109/255, 82/255 )
@@ -81,18 +81,17 @@ function MenuLeft:new()
 		lineMenu1:setStrokeColor( 248/255, 6/255, 4/255 )
         selfL:insert(lineMenu1)
 		
-		local imgBtnSignOut = display.newImage( "img/btn/loginGuardias-iconoSalir.png" )
+		local imgBtnSignOut = display.newImage( "img/btn/exit.png" )
 		imgBtnSignOut.anchorX = 0
 		imgBtnSignOut.anchorY = 0
         imgBtnSignOut.x= 20
-        imgBtnSignOut.y = intH - 85
-		imgBtnSignOut:setFillColor( .1 )
+        imgBtnSignOut.y = intH - 65
        -- imgBtnBack:addEventListener( "tap", returnScene )
         selfL:insert( imgBtnSignOut )
 		
 		txtTitleSignOut = display.newText( {
 			text = "Salir",
-            x = 130, y = intH - 50,
+            x = 130, y = intH - 40,
 			width = 400, align = "center",
             font = "Lato-Regular", fontSize = 32, 
         })

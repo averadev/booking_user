@@ -12,7 +12,7 @@ local DBManager = require('src.resources.DBManager')
 
 local isUser = DBManager.setupSquema()
 
-print(isUser)
+display.setStatusBar( display.DarkStatusBar )
 
 if not isUser then
 	composer.gotoScene("src.Login")
@@ -21,16 +21,28 @@ else
 end
 
 function DidReceiveRemoteNotification(message, additionalData, isActive)
-    if (additionalData) then
-        if (additionalData.discount) then
-            native.showAlert( "Discount!", message, { "OK" } )
-            -- Take user to your app store
-        elseif (additionalData.actionSelected) then -- Interactive notification button pressed
-            native.showAlert("Button Pressed!", "ButtonID:" .. additionalData.actionSelected, { "OK"} )
-        end
-    else
-        native.showAlert("OneSignal Message", message, { "OK" } )
-    end
+    if isActive then
+		system.vibrate()
+		--[[local RestManager = require('src.resources.RestManager')
+		RestManager.getNotificationsUnRead()
+		require('src.Header')
+		alertNewNotifications()
+		system.vibrate()]]
+		
+	else
+		if (additionalData) then
+			if additionalData.type == "1" then
+				local RestManager = require('src.resources.RestManager')
+				
+				composer.gotoScene( "src.Visit", {
+					params = { id = additionalData.id }
+				})
+				RestManager.markMessageRead(additionalData.id, 2)
+				RestManager.getMessageUnRead()
+				--storyboard.removeScene( "src.Home" )
+			end
+		end
+	end
 end
 
 local OneSignal = require("plugin.OneSignal")
@@ -40,6 +52,7 @@ OneSignal.Init("d55cca2a-694c-11e5-b9d4-c39860ec56cd", 368044900698, DidReceiveR
 
 function IdsAvailable(userID, pushToken)
     Globals.playerIdToken = userID
+	print(userID)
 end
 
 OneSignal.IdsAvailableCallback(IdsAvailable)

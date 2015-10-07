@@ -83,6 +83,7 @@ end
 
 --funcion de logeo
 function SignIn()
+	native.setKeyboardFocus( nil )
 	btnSignLogin:removeEventListener( 'tap', SignIn)
 	btnSignLogin.alpha = .5
 	if txtSignEmail.text ~= '' and txtSignPassword.text ~= '' then

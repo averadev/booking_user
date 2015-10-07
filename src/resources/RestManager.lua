@@ -81,8 +81,8 @@ local RestManager = {}
         local url = settings.url
         url = url.."api/setIdPlayerUser/format/json"
         url = url.."/idApp/"..idUser
-		--url = url.."/playerId/"..urlencode(Globals.playerIdToken)
-		url = url.."/playerId/"..urlencode('hola')
+		url = url.."/playerId/"..urlencode(Globals.playerIdToken)
+		--url = url.."/playerId/"..urlencode('hola')
 		print(url)
 	
         local function callback(event)

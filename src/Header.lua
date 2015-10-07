@@ -366,20 +366,20 @@ function Header:new()
         txtTitle:setFillColor( 0 )
         self:insert(txtTitle)
 
-        local imgBtnBack = display.newImage( "img/btn/iconReturn.png" )
+        local imgBtnBack = display.newImage( "img/btn/regresar.png" )
         imgBtnBack.anchorX = 0
-        imgBtnBack.x= 25
-        imgBtnBack.y = 67 + hWB
+        imgBtnBack.x= 10
+        imgBtnBack.y = 68 + hWB
         imgBtnBack:addEventListener( "tap", returnScene )
         self:insert( imgBtnBack )
         
-		local txtReturn = display.newText( {
+		--[[local txtReturn = display.newText( {
             x = 90, y = 67 + hWB,
 			width = 100, align = "center",
             font = "Lato-Bold", fontSize = 14, text = "Regresar"
         })
         txtReturn:setFillColor( 0 )
-        self:insert(txtReturn)
+        self:insert(txtReturn)]]
 		
 		local imgBtnHome = display.newImage( "img/btn/home.png" )
         imgBtnHome.x= 440
