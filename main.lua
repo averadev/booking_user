@@ -10,9 +10,9 @@ local composer = require( "composer" )
 local Globals = require('src.resources.Globals')
 local DBManager = require('src.resources.DBManager')
 
-local isUser = DBManager.setupSquema()
-
 display.setStatusBar( display.DarkStatusBar )
+
+local isUser = DBManager.setupSquema()
 
 if not isUser then
 	composer.gotoScene("src.Login")
