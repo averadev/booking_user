@@ -34,6 +34,8 @@ local RestManager = {}
 	
         local function callback(event)
             if ( event.isError ) then
+				deleteLoadingLogin()
+				native.showAlert( "Booking", event.isError, { "OK"})
             else
                 local data = json.decode(event.response)
                 if data.success then
