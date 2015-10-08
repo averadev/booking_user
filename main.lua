@@ -57,4 +57,4 @@ end
 
 OneSignal.IdsAvailableCallback(IdsAvailable)
 
-
+OneSignal.EnableNotificationsWhenActive(true)
