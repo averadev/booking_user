@@ -83,6 +83,8 @@ function buildVisitItems()
 		--[[end]]
     end
 	
+	svContent:setScrollHeight(yMain)
+	
 end
 
 function markRead( event )

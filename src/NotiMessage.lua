@@ -102,6 +102,8 @@ function buildMensageItems( event)
 		--[[end]]
     end
 	
+	svContent:setScrollHeight(yMain)
+	
 end
 
 

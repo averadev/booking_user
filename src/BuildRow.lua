@@ -195,7 +195,7 @@ function Visit:new()
         container:insert(txtHora)
         
         local txtVisit = display.newText( {
-			text = item.nombreVisitante:sub(1,25).."...",
+			text = item.nombreVisitante:sub(1,25),
             x = 25, y = 0,
             width = 300,
             font = fontLatoBold, fontSize = 22, align = "left"
@@ -205,7 +205,7 @@ function Visit:new()
 
         local txtInfo = display.newText( {
             --text = item.detail:sub(1,42).."...",
-			text = item.motivo:sub(1,45).."...",
+			text = item.motivo:sub(1,45),
             x = 35, y = 32, width = 320,
             font = fontLatoLight, fontSize = 16, align = "left"
         })
