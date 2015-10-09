@@ -5,37 +5,6 @@
 
 settings =
 {
-	
-	orientation =
-	{
-		-- Supported values for orientation:
-		-- portrait, portraitUpsideDown, landscapeLeft, landscapeRight
-
-		default = "portrait",
-		supported = { "portrait", }
-	},
-	
-	plugins =
-    {
-		["plugin.OneSignal"] =
-		{
-			publisherId = "com.onesignal",
-		},
-		
-		["plugin.google.play.services"] =
-		{
-			publisherId = "com.coronalabs",
-			supportedPlatforms = { android=true, ["android-kindle"]=true },
-		},
-		
-    },
-	
-	excludeFiles =
-	{
-		-- Include only the necessary icon files on each platform
-		iphone = { "Icon-*dpi.png", },
-		android = { "Icon.png", "Icon-Small-*.png", "Icon*@2x.png", },
-	},
 
 	--
 	-- iOS Section
@@ -46,10 +15,9 @@ settings =
 		{
 			NSAppTransportSecurity ={
 				NSExceptionDomains ={
-					["http://geekbucket.com.mx"] ={
+					["geekbucket.com.mx"] ={
 						NSIncludesSubdomains = true,
-						NSThirdPartyExceptionAllowsInsecureHTTPLoads = true,
-						NSExceptionRequiresForwardSecrecy = false
+						NSThirdPartyExceptionAllowsInsecureHTTPLoads = true
 					},
 				},
 			},
@@ -95,6 +63,37 @@ settings =
 			}
 			--]]
 		}
+	},
+	
+	orientation =
+	{
+		-- Supported values for orientation:
+		-- portrait, portraitUpsideDown, landscapeLeft, landscapeRight
+
+		default = "portrait",
+		supported = { "portrait", }
+	},
+	
+	plugins =
+    {
+		["plugin.OneSignal"] =
+		{
+			publisherId = "com.onesignal",
+		},
+		
+		["plugin.google.play.services"] =
+		{
+			publisherId = "com.coronalabs",
+			supportedPlatforms = { android=true, ["android-kindle"]=true },
+		},
+		
+    },
+	
+	excludeFiles =
+	{
+		-- Include only the necessary icon files on each platform
+		iphone = { "Icon-*dpi.png", },
+		android = { "Icon.png", "Icon-Small-*.png", "Icon*@2x.png", },
 	},
 	
 	--
