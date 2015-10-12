@@ -223,26 +223,20 @@ function Header:new()
 	
 	--cierra la session del usuario
 	function SignOut( event )
-	
-		hideMenuLeft()
-		DBManager.clearUser()
-		Globals.scene = nil
-		Globals.scene = {}
-		composer.removeScene("src.Login")
-		composer.gotoScene( "src.Login", { time = 400, effect = "slideLeft" })
 		
-		--RestManager.deletePlayerIdOfUSer()
+		RestManager.deletePlayerIdOfUSer()
 		
 		return true
 		
 	end
 	
-	function SignOut2( event )
+	function SignOut2( )
 		
 		hideMenuLeft()
 		DBManager.clearUser()
 		Globals.scene = nil
 		Globals.scene = {}
+		createNotBubble(0,0)
 		composer.removeScene("src.Login")
 		composer.gotoScene( "src.Login", { time = 400, effect = "slideLeft" })
 		

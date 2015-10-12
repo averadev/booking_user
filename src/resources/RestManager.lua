@@ -31,6 +31,8 @@ local RestManager = {}
         url = url.."/password/"..password
 		url = url.."/playerId/"..urlencode(Globals.playerIdToken)
 		--url = url.."/playerId/"..urlencode('adios')
+		
+		print(url)
 	
         local function callback(event)
             if ( event.isError ) then
@@ -100,8 +102,7 @@ local RestManager = {}
 						deleteMessageSignIn()
 						goToHomeLoginCondo()
 					end, 1 )
-					
-					
+						
                 else
 					getMessageSignIn(data.message, 2)
 					timeMarker = timer.performWithDelay( 2000, function()
@@ -117,28 +118,33 @@ local RestManager = {}
         network.request( url, "GET", callback ) 
     end
 	
-	RestManager.signOut = function(password)
+	RestManager.deletePlayerIdOfUSer = function()
 	
-        local settings = DBManager.getSettings()
+		local settings = DBManager.getSettings()
         -- Set url
-        password = crypto.digest(crypto.md5, password)
         local url = settings.url
-        url = url.."api/signOut/format/json"
+        url = url.."api/deletePlayerIdOfUSer/format/json"
         url = url.."/idApp/"..settings.idApp
-        url = url.."/password/"..password
+		url = url.."/condominioId/"..settings.condominioId
+		--url = url.."/playerId/"..urlencode('hola')
 	
         local function callback(event)
             if ( event.isError ) then
             else
                 local data = json.decode(event.response)
                 if data.success then
-					DBManager.clearUser()
-					signOut()
+					local items = data.items
+					
+					getMessageSignIn(data.message, 1)
+					timeMarker = timer.performWithDelay( 1000, function()
+						deleteMessageSignIn()
+						SignOut2()
+					end, 1 )
+					
                 else
-                    --native.showAlert( "Booking", data.message, { "OK"})
-					NewAlert("Booking",data.message, 600, 200, 2000)
+					getMessageSignIn(data.message, 2)
 					timeMarker = timer.performWithDelay( 2000, function()
-						deleteNewAlert()
+						deleteMessageSignIn()
 					end, 1 )
                 end
             end
@@ -146,7 +152,8 @@ local RestManager = {}
         end
         -- Do request
         network.request( url, "GET", callback ) 
-    end
+	
+	end
 	
 	--obtiene el numero de mensajes no leidos de visitas
 	RestManager.getMessageUnRead = function()
