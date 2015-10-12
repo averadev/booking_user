@@ -18,6 +18,10 @@ local txtNoBubbleV
 local totalBubbleA, totalBubbleV
 local menuScreenLeft = nil
 
+local btnBackFunction = false
+
+local menuActive = false
+
 function Header:new()
     -- Variables
 	local intW = display.contentWidth
@@ -48,6 +52,7 @@ function Header:new()
 	
 	--mostramos el menu izquierdo
 	function showMenuLeft( event )
+		
 		if groupNoBubbleA then groupNoBubbleA.x = 500 end
 		if groupNoBubbleV then groupNoBubbleV.x = 500 end
 		local screen = getScreen()
@@ -55,6 +60,8 @@ function Header:new()
 		transition.to( screen, { x = 350, time = 400, transition = easing.outExpo } )
 		transition.to( menuScreenLeft, { x = 0, time = 400, transition = easing.outExpo } )
 		screen = nil
+		menuActive = true
+		return true
 	end
 	
 	--esconde el menuIzquierdo
@@ -72,6 +79,7 @@ function Header:new()
 			transition.to( groupNoBubbleV, { x = 0, time = 400, transition = easing.outExpo } )
 		end
 		screen = nil
+		menuActive = false
 		return true
 	end
 	
@@ -405,7 +413,34 @@ function Header:new()
     return self
 end
 
-local noBuble
+-- Return button Android Devices
+local function onKeyEventBack( event )
+	local phase = event.phase
+	local keyName = event.keyName
+	local platformName = system.getInfo( "platformName" )
+	
+	if( "back" == keyName and phase == "up" ) then
+		if ( platformName == "Android" ) then
+			
+			local currentScene = composer.getSceneName( "current" )
+			
+			if menuActive == true then
+				hideMenuLeft( 0 )
+			elseif currentScene ~= "src.Home" then
+				returnScene()
+			else
+				native.requestExit()
+			end
+			return true
+		end
+	end
+	return false
+end
+
+if btnBackFunction == false then
+	btnBackFunction = true
+	Runtime:addEventListener( "key", onKeyEventBack )
+end
 
 ----------------------------------------------
 -------------Funciones------------------------
