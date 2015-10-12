@@ -117,6 +117,8 @@ local dbManager = {}
 		
 		local query = "CREATE TABLE IF NOT EXISTS condominios (id INTEGER, idUser INTEGER, nombre TEXT );"
 		db:exec( query )
+		
+		
 
         -- Return if have connection
 		for row in db:nrows("SELECT idApp, condominioId FROM config;") do

@@ -80,13 +80,13 @@ function Header:new()
 		local currentScene = composer.getSceneName( "current" )
 		if currentScene == "src.Home" then
 			return getScreenH()
-		elseif currentScene == "src.Event" then
+		elseif currentScene == "src.NotiMessage" then
 			return getScreenMA()
-		elseif currentScene == "src.Coupon" then
+		elseif currentScene == "src.NotiVisit" then
 			return getScreenMV()
-		elseif currentScene == "src.Partner" then
+		elseif currentScene == "src.Message" then
 			return getScreenA()
-		elseif currentScene == "src.PartnerList" then
+		elseif currentScene == "src.Visit" then
 			return getScreenV()
 		end
 		
@@ -95,13 +95,17 @@ function Header:new()
 	function moveNoBubbleLeft()
 		if groupNoBubbleA then 
 			transition.to( groupNoBubbleA, { x = -480, time = 400, transition = easing.outExpo, onComplete=function()
-					groupNoBubbleA.x = 0
+					if groupNoBubbleA then
+						groupNoBubbleA.x = 0
+					end
 				end
 			})
 		end
 		if groupNoBubbleV then 
 			transition.to( groupNoBubbleV, { x = -480, time = 400, transition = easing.outExpo, onComplete=function()
-					groupNoBubbleV.x = 0
+					if groupNoBubbleV then
+						groupNoBubbleV.x = 0
+					end
 				end
 			})
 		end
@@ -156,11 +160,11 @@ function Header:new()
 			end
 		else
 		
-			txtNoBubbleA = display.newText( {
+			--[[txtNoBubbleA = display.newText( {
 				x = 361, y = 20,
 				text = "", font = "Lato-Regular", fontSize = 12,
 			})
-			txtNoBubbleA:setFillColor( 1 )
+			txtNoBubbleA:setFillColor( 1 )]]
 			--groupNoBubbleA:insert(txtNoBubbleA)
 		
 			if groupNoBubbleA then
@@ -202,11 +206,11 @@ function Header:new()
 			end
 		else
 		
-			txtNoBubbleV = display.newText( {
+			--[[txtNoBubbleV = display.newText( {
 				x = 441, y = 17,
 				text = "", font = "Lato-Regular", fontSize = 12,
 			})
-			txtNoBubbleV:setFillColor( 1 )
+			txtNoBubbleV:setFillColor( 1 )]]
 		
 			if groupNoBubbleV then
 				groupNoBubbleV:removeSelf()
@@ -219,6 +223,21 @@ function Header:new()
 	
 	--cierra la session del usuario
 	function SignOut( event )
+	
+		hideMenuLeft()
+		DBManager.clearUser()
+		Globals.scene = nil
+		Globals.scene = {}
+		composer.removeScene("src.Login")
+		composer.gotoScene( "src.Login", { time = 400, effect = "slideLeft" })
+		
+		--RestManager.deletePlayerIdOfUSer()
+		
+		return true
+		
+	end
+	
+	function SignOut2( event )
 		
 		hideMenuLeft()
 		DBManager.clearUser()
@@ -258,7 +277,7 @@ function Header:new()
 			moveNoBubbleRight()
 			Globals.scene = nil
 			Globals.scene = {}
-			storyboard.gotoScene( "src.Home", { time = 400, effect = "slideRight" })
+			composer.gotoScene( "src.Home", { time = 400, effect = "slideRight" })
         end
 		
     end

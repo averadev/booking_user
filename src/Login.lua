@@ -78,7 +78,6 @@ function onTxtFocusLogin( event )
     elseif event.phase == "editing" then
 
     end
-
 end
 
 --funcion de logeo
