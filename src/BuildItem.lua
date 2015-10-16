@@ -196,7 +196,7 @@ function getNoContent(obj, txtData)
 			grpLoading = display.newGroup()
 			obj:insert(grpLoading)
 			
-			local noData = display.newImage( "img/btn/noData.png" )
+			local noData = display.newImage( "img/btn/mail-icon.png" )
 			noData.x = display.contentWidth / 2
 			noData.y = (obj.height / 3) - 35
 			grpLoading:insert(noData) 
