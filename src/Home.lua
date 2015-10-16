@@ -113,7 +113,7 @@ function scene:create( event )
 	local labelNameUserHome = display.newText( {   
         x = intW/2, y = lastY,
 		width = 400,
-        text = settings.name .. " " .. settings.apellido,  font = fontLatoRegular, fontSize = 24, align = "center",
+        text = "Maria Guadalupe del Rosario",  font = fontLatoRegular, fontSize = 24, align = "center",
 	})
 	labelNameUserHome:setFillColor( 0 )
 	homeScreen:insert(labelNameUserHome)
@@ -128,8 +128,9 @@ function scene:create( event )
 	bgPhoto.strokeWidth = 4
 	homeScreen:insert(bgPhoto)
 	
-	local imgPhotoGuard = display.newImage( "img/bgk/fotoGuard.jpeg" )
+	--RestManager.getLastGuard()
 	
+	local imgPhotoGuard = display.newImage( "img/bgk/fotoGuard.jpeg" )
 	imgPhotoGuard.anchorY = 0
 	imgPhotoGuard.x= intW/2
 	imgPhotoGuard.y = lastY + 2

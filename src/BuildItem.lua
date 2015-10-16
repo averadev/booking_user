@@ -202,7 +202,7 @@ function getNoContent(obj, txtData)
 			grpLoading:insert(noData) 
 			
 			local title = display.newText( txtData, 0, 30, "Chivo", 16)
-			title:setFillColor( 1 )
+			title:setFillColor( 0 )
 			title.x = display.contentWidth / 2
 			title.y = (obj.height / 3) + 80
 			grpLoading:insert(title) 
