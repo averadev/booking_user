@@ -37,13 +37,86 @@ else
 	fontLatoRegular = "Lato-Regular"
 end
 
+local itemsGuard
+
+local lastY  = 0
+
 ----elementos
 
 ---------------------------------------------------
 ------------------ Funciones ----------------------
 ---------------------------------------------------
 
+function setElementGuard(item)
 
+	if #item > 0 then
+		itemsGuard = item[1]
+		
+		loadImageGuard()
+	end
+	
+end
+
+function loadImageGuard()
+
+	print('holawdjawdkjawndjakwndjawdnawjdnawkjnd')
+
+	--print(itemsGuard.foto)
+	
+	local nameImg
+	local extImg
+	for k, v in string.gmatch( itemsGuard.foto, "(%w+).(%w+)" ) do
+		nameImg = k
+		extImg = v
+	end
+
+	-- Listener de la carga de la imagen del servidor
+	local function loadImageListener( event )
+		if ( event.isError ) then
+			native.showAlert( "Go Deals", "Network error :(", { "OK"})
+		else
+			event.target.alpha = 0
+			itemsGuard.foto = "imgGuardTurn." .. extImg
+			buildItemGuardTurn()
+		end
+	end
+		-- Descargamos de la nube
+		display.loadRemoteImage( settings.url..itemsGuard.path..itemsGuard.foto, 
+		"GET", loadImageListener, "imgGuardTurn." .. extImg, system.TemporaryDirectory )
+
+end
+
+function buildItemGuardTurn()
+
+	local labelNameUserHome = display.newText( {   
+        x = intW/2, y = lastY,
+		width = 400,
+        text = itemsGuard.nombre .. " " .. itemsGuard.apellidos,  font = fontLatoRegular, fontSize = 24, align = "center",
+	})
+	labelNameUserHome:setFillColor( 0 )
+	homeScreen:insert(labelNameUserHome)
+	
+	lastY = lastY + 35
+	
+	local bgPhoto = display.newRect( intW/2, lastY, 300, 350 )
+	bgPhoto.anchorY = 0
+	bgPhoto.anchorY = 0
+	bgPhoto:setFillColor( 1 )
+	bgPhoto:setStrokeColor( 205/255, 205/255, 205/255 )
+	bgPhoto.strokeWidth = 4
+	homeScreen:insert(bgPhoto)
+	
+	--RestManager.getLastGuard()
+	
+	local imgPhotoGuard = display.newImage( itemsGuard.foto, system.TemporaryDirectory )
+	imgPhotoGuard.anchorY = 0
+	imgPhotoGuard.x= intW/2
+	imgPhotoGuard.y = lastY + 2
+	imgPhotoGuard.width = 296
+	imgPhotoGuard.height = 346
+	homeScreen:insert( imgPhotoGuard )
+
+end
 
 ---------------------------------------------------
 --------------Funciones defaults-------------------
@@ -88,7 +161,7 @@ function scene:create( event )
     header.y = h
     header:buildToolbar()
 	
-	local lastY = h + 150
+	lastY = h + 150
 	
 	local labelWelcomeHome = display.newText( {   
          x = intW/2, y = lastY,
@@ -110,7 +183,7 @@ function scene:create( event )
 	
 	lastY = lastY + 75
 	
-	local labelNameUserHome = display.newText( {   
+	--[[local labelNameUserHome = display.newText( {   
         x = intW/2, y = lastY,
 		width = 400,
         text = "Maria Guadalupe del Rosario",  font = fontLatoRegular, fontSize = 24, align = "center",
@@ -136,9 +209,9 @@ function scene:create( event )
 	imgPhotoGuard.y = lastY + 2
 	imgPhotoGuard.width = 296
 	imgPhotoGuard.height = 346
-	homeScreen:insert( imgPhotoGuard )
+	homeScreen:insert( imgPhotoGuard )]]
 	
-	
+	RestManager.getLastGuard()
 	
 end
 

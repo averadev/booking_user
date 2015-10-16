@@ -155,6 +155,33 @@ local RestManager = {}
 	
 	end
 	
+	--obtiene la info del ultimo guardia en turno
+	RestManager.getLastGuard = function()
+	
+		local settings = DBManager.getSettings()
+        -- Set url
+        local url = settings.url
+        url = url.."api/getLastGuard/format/json"
+        url = url.."/idApp/"..settings.idApp
+		url = url.."/condominioId/"..settings.condominioId
+	
+        local function callback(event)
+            if ( event.isError ) then
+            else
+                local data = json.decode(event.response)
+                if data.success then
+					local items = data.items
+					setElementGuard(items)
+                else
+                end
+            end
+            return true
+        end
+        -- Do request
+       network.request( url, "GET", callback ) 
+	
+	end
+	
 	--obtiene el numero de mensajes no leidos de visitas
 	RestManager.getMessageUnRead = function()
 	
