@@ -40,6 +40,16 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 				RestManager.markMessageRead(additionalData.id, 2)
 				RestManager.getMessageUnRead()
 				--storyboard.removeScene( "src.Home" )
+			elseif additionalData.type == "2" then
+			
+				local RestManager = require('src.resources.RestManager')
+				
+				composer.gotoScene( "src.Message", {
+					params = { id = additionalData.id }
+				})
+				RestManager.markMessageRead(additionalData.id, 1)
+				RestManager.getMessageUnRead()
+			
 			end
 		end
 	end
