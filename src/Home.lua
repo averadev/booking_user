@@ -41,6 +41,8 @@ local itemsGuard
 
 local lastY  = 0
 
+local labelNumCondo
+
 ----elementos
 
 ---------------------------------------------------
@@ -58,8 +60,6 @@ function setElementGuard(item)
 end
 
 function loadImageGuard()
-
-	print('holawdjawdkjawndjakwndjawdnawjdnawkjnd')
 
 	--print(itemsGuard.foto)
 	
@@ -88,33 +88,41 @@ end
 
 function buildItemGuardTurn()
 
+	lastY = lastY + 25
+
 	local labelNameUserHome = display.newText( {   
         x = intW/2, y = lastY,
 		width = 400,
-        text = itemsGuard.nombre .. " " .. itemsGuard.apellidos,  font = fontLatoRegular, fontSize = 24, align = "center",
+        text = "En servicio: " .. itemsGuard.nombre .. " " .. itemsGuard.apellidos,  font = fontLatoRegular, fontSize = 17, align = "center",
 	})
 	labelNameUserHome:setFillColor( 0 )
 	homeScreen:insert(labelNameUserHome)
 	
-	lastY = lastY + 35
+	lastY = lastY + 25
 	
 	local bgPhoto = display.newRect( intW/2, lastY, 300, 350 )
 	bgPhoto.anchorY = 0
 	bgPhoto.anchorY = 0
-	bgPhoto:setFillColor( 1 )
-	bgPhoto:setStrokeColor( 205/255, 205/255, 205/255 )
-	bgPhoto.strokeWidth = 4
+	bgPhoto:setFillColor( 205/255, 205/255, 205/255 )
 	homeScreen:insert(bgPhoto)
+	
+	local bgPhoto2 = display.newRect( intW/2, lastY + 3, 294, 344 )
+	bgPhoto2.anchorY = 0
+	bgPhoto2.anchorY = 0
+	bgPhoto2:setFillColor( 1 )
+	homeScreen:insert(bgPhoto2)
 	
 	--RestManager.getLastGuard()
 	
-	local imgPhotoGuard = display.newImage( itemsGuard.foto, system.TemporaryDirectory )
+	--local imgPhotoGuard = display.newImage( itemsGuard.foto, system.TemporaryDirectory )
+	local imgPhotoGuard = display.newImage( "img/bgk/fotoGuard.jpeg" )
 	imgPhotoGuard.anchorY = 0
 	imgPhotoGuard.x= intW/2
-	imgPhotoGuard.y = lastY + 2
-	imgPhotoGuard.width = 296
-	imgPhotoGuard.height = 346
+	imgPhotoGuard.y = lastY + 3
+	imgPhotoGuard.width = 294
+	imgPhotoGuard.height = 344
 	homeScreen:insert( imgPhotoGuard )
+	imgPhotoGuard:ToFront()
 
 end
 
@@ -150,6 +158,29 @@ function scene:create( event )
 	bgRectWhite:setFillColor( 1 )
 	homeScreen:insert(bgRectWhite)
 	
+	local bgRectGreen = display.newRect( 0, h + 65, 150, 49 )
+	bgRectGreen.anchorX = 0
+	bgRectGreen.anchorY = 0
+	bgRectGreen:setFillColor( 0, 148/255, 49/255 ) 
+	homeScreen:insert(bgRectGreen)
+	
+	local imgNumCondo = display.newImage( "img/btn/icono-condo.png" )
+	imgNumCondo.anchorX = 0
+	imgNumCondo.anchorY = 0
+	imgNumCondo.x= 5
+	imgNumCondo.y = h + 65
+	homeScreen:insert( imgNumCondo )
+	
+	local condoInfo = DBManager.getCondominiumById(settings.condominioId)
+	
+	labelNumCondo  = display.newText( {   
+         x = 120, y = h + 88,
+		width = 100,
+        text = condoInfo.nombre,  font = fontLatoBold, fontSize = 20,
+	})
+	labelNumCondo:setFillColor( 1 )
+	homeScreen:insert(labelNumCondo)
+	
 	local lineMenu = display.newRect( 0, h + 65 + 48, display.contentWidth, 1 )
 	lineMenu.anchorX = 0
 	lineMenu.anchorY = 0
@@ -161,57 +192,87 @@ function scene:create( event )
     header.y = h
     header:buildToolbar()
 	
-	lastY = h + 150
+	lastY = h + 135
 	
-	local labelWelcomeHome = display.newText( {   
-         x = intW/2, y = lastY,
-		width = 400,
-        text = "Bienvenido",  font = fontLatoBold, fontSize = 22,
+	local bgRectGrayGuard = display.newRoundedRect( intW/2 - 4, lastY + 2, 380, 442, 8 )
+	bgRectGrayGuard.anchorY = 0
+	bgRectGrayGuard:setFillColor( 212/255, 212/255, 211/255 )
+	homeScreen:insert(bgRectGrayGuard)
+	
+	local bgRectWhiteGuard = display.newRoundedRect( intW/2, lastY, 380, 440, 8 )
+	bgRectWhiteGuard.anchorY = 0
+	bgRectWhiteGuard:setFillColor( 1 )
+	homeScreen:insert(bgRectWhiteGuard)
+	
+	lastY =  lastY + 465
+	
+	local bgRectBlackPhone = display.newRoundedRect( intW/2 - 3, lastY + 3, 380, 105, 8 )
+	bgRectBlackPhone.anchorY = 0
+	bgRectBlackPhone:setFillColor( 101/255, 103/255, 100/255 )
+	bgRectBlackPhone.alpha = .8
+	homeScreen:insert(bgRectBlackPhone)
+	
+	local paint = {
+		type = "gradient",
+		color1 = { 10/255, 49/255, 82/255 },
+		color2 = { 4/255, 35/255, 63/255},
+		direction = "down"
+	}
+	
+	local bgRectBluePhone = display.newRoundedRect( intW/2, lastY, 380, 130, 8 )
+	bgRectBluePhone.anchorY = 0
+	bgRectBluePhone:setFillColor( 1 )
+	bgRectBluePhone.fill = paint
+	homeScreen:insert(bgRectBluePhone)
+	
+	local imgInfoPhone = display.newImage( "img/btn/icono-tel.png" )
+	imgInfoPhone.anchorX = 0
+	imgInfoPhone.anchorY = 0
+	imgInfoPhone.x= 95
+	imgInfoPhone.y = lastY + 7
+	homeScreen:insert( imgInfoPhone )
+	
+	labelInfoPhone  = display.newText( {   
+         x = intW/2 + 30, y = lastY + 32,
+        text = "TELÉFONOS IMPORTANTES",  font = fontLatoBold, fontSize = 16,
 	})
-	labelWelcomeHome:setFillColor( 0 )
-	homeScreen:insert(labelWelcomeHome)
+	labelInfoPhone:setFillColor( 1 )
+	homeScreen:insert(labelInfoPhone)
 	
-	lastY = lastY + 35
+	lastY = lastY + 40
 	
-	local labelInfoHome = display.newText( {   
-        x = intW/2, y = lastY,
-		width = 400,
-        text = "Actualmente se encuentra en servicio:",  font = fontLatoRegular, fontSize = 18,
+	labelPhoneAdmin  = display.newText( {   
+         x = intW/2, y = lastY + 32,
+		 width = 340,
+        text = "Administración: (998) 880 00 00",  font = fontLatoRegular, fontSize = 14,
 	})
-	labelInfoHome:setFillColor( 0 )
-	homeScreen:insert(labelInfoHome)
+	labelPhoneAdmin:setFillColor( 1 )
+	homeScreen:insert(labelPhoneAdmin)
 	
-	lastY = lastY + 75
+	lastY = lastY + 20
 	
-	--[[local labelNameUserHome = display.newText( {   
-        x = intW/2, y = lastY,
-		width = 400,
-        text = "Maria Guadalupe del Rosario",  font = fontLatoRegular, fontSize = 24, align = "center",
+	labelPhoneCaseta  = display.newText( {   
+         x = intW/2, y = lastY + 32,
+		 width = 340,
+        text = "Caseta:             (998) 880 00 20",  font = fontLatoRegular, fontSize = 14,
 	})
-	labelNameUserHome:setFillColor( 0 )
-	homeScreen:insert(labelNameUserHome)
+	labelPhoneCaseta:setFillColor( 1 )
+	homeScreen:insert(labelPhoneCaseta)
 	
-	lastY = lastY + 35
+	lastY = lastY + 20
 	
-	local bgPhoto = display.newRect( intW/2, lastY, 300, 350 )
-	bgPhoto.anchorY = 0
-	bgPhoto.anchorY = 0
-	bgPhoto:setFillColor( 1 )
-	bgPhoto:setStrokeColor( 205/255, 205/255, 205/255 )
-	bgPhoto.strokeWidth = 4
-	homeScreen:insert(bgPhoto)
+	labelPhoneCaseta  = display.newText( {   
+         x = intW/2, y = lastY + 32,
+		 width = 340,
+        text = "Lobby:               (998) 880 00 40",  font = fontLatoRegular, fontSize = 14,
+	})
+	labelPhoneAdmin:setFillColor( 1 )
+	homeScreen:insert(labelPhoneAdmin)
 	
-	--RestManager.getLastGuard()
-	
-	local imgPhotoGuard = display.newImage( "img/bgk/fotoGuard.jpeg" )
-	imgPhotoGuard.anchorY = 0
-	imgPhotoGuard.x= intW/2
-	imgPhotoGuard.y = lastY + 2
-	imgPhotoGuard.width = 296
-	imgPhotoGuard.height = 346
-	homeScreen:insert( imgPhotoGuard )]]
-	
+	lastY = h + 135
 	RestManager.getLastGuard()
+	
+	--local labelPhoneAdmin
 	
 end
 

@@ -71,6 +71,18 @@ local dbManager = {}
 		end
 	end
 	
+	--obtiene los datos del condominio por id
+	dbManager.getCondominiumById = function(id)
+		local result = {}
+		openConnection( )
+		for row in db:nrows("SELECT * FROM condominios where id = '" .. id .. "';") do
+			closeConnection( )
+			return  row
+		end
+		closeConnection( )
+		return 1
+	end
+	
 	--actualiza los datos del admin
     dbManager.updateUser = function(idApp, email, password, name, apellido, condominio)
 		openConnection( )
