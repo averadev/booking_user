@@ -122,7 +122,6 @@ function buildItemGuardTurn()
 	imgPhotoGuard.width = 294
 	imgPhotoGuard.height = 344
 	homeScreen:insert( imgPhotoGuard )
-	imgPhotoGuard:ToFront()
 
 end
 
@@ -194,23 +193,57 @@ function scene:create( event )
 	
 	lastY = h + 135
 	
-	local bgRectGrayGuard = display.newRoundedRect( intW/2 - 4, lastY + 2, 380, 442, 8 )
-	bgRectGrayGuard.anchorY = 0
-	bgRectGrayGuard:setFillColor( 212/255, 212/255, 211/255 )
-	homeScreen:insert(bgRectGrayGuard)
+	local borderRight = display.newRect( 48, lastY, 8, 440 )
+	borderRight.anchorY = 0
+		borderRight:setFillColor( {
+           type = 'gradient',
+           color1 = { .2, .2, .2, .4 }, 
+           color2 = { .8, .8, .8, .1 },
+           direction = "left"
+		   
+	})
+	homeScreen:insert(borderRight)
+	
+	local borderDown= display.newRect( intW/2, lastY + 438, 380, 8 )
+	borderDown.anchorY = 0
+		borderDown:setFillColor( {
+           type = 'gradient',
+           color1 = { .2, .2, .2, .4 }, 
+           color2 = { .8, .8, .8, .1 },
+           direction = "down"
+		   
+	})
+	homeScreen:insert(borderDown)
 	
 	local bgRectWhiteGuard = display.newRoundedRect( intW/2, lastY, 380, 440, 8 )
 	bgRectWhiteGuard.anchorY = 0
 	bgRectWhiteGuard:setFillColor( 1 )
 	homeScreen:insert(bgRectWhiteGuard)
 	
+	
 	lastY =  lastY + 465
 	
-	local bgRectBlackPhone = display.newRoundedRect( intW/2 - 3, lastY + 3, 380, 105, 8 )
-	bgRectBlackPhone.anchorY = 0
-	bgRectBlackPhone:setFillColor( 101/255, 103/255, 100/255 )
-	bgRectBlackPhone.alpha = .8
-	homeScreen:insert(bgRectBlackPhone)
+	local borderRight2 = display.newRect( 48, lastY + 6, 8, 120 )
+	borderRight2.anchorY = 0
+		borderRight2:setFillColor( {
+           type = 'gradient',
+           color1 = { .2, .2, .2, .4 }, 
+           color2 = { .8, .8, .8, .1 },
+           direction = "left"
+		   
+	})
+	homeScreen:insert(borderRight2)
+	
+	local borderDown2 = display.newRect( intW/2, lastY + 128, 370, 8 )
+	borderDown2.anchorY = 0
+		borderDown2:setFillColor( {
+           type = 'gradient',
+           color1 = { .2, .2, .2, .4 }, 
+           color2 = { .8, .8, .8, .1 },
+           direction = "down"
+		   
+	})
+	homeScreen:insert(borderDown2)
 	
 	local paint = {
 		type = "gradient",
