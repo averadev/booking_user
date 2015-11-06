@@ -31,8 +31,6 @@ local RestManager = {}
         url = url.."/password/"..password
 		url = url.."/playerId/"..urlencode(Globals.playerIdToken)
 		--url = url.."/playerId/"..urlencode('adios')
-		
-		print(url)
 	
         local function callback(event)
             if ( event.isError ) then
@@ -45,6 +43,7 @@ local RestManager = {}
 					if #items == 1 then
 						getMessageSignIn(data.message, 1)
 						DBManager.updateUser(items[1].id, items[1].email, items[1].contrasena, items[1].nombre, items[1].apellido, items[1].condominioId)
+						DBManager.insertCondominium(items)
 						timeMarker = timer.performWithDelay( 2000, function()
 							deleteLoadingLogin()
 							deleteMessageSignIn()

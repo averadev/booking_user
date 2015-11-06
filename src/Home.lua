@@ -261,13 +261,13 @@ function scene:create( event )
 	
 	lastY = lastY + 20
 	
-	labelPhoneCaseta  = display.newText( {   
+	labelPhoneLobby  = display.newText( {   
          x = intW/2, y = lastY + 32,
 		 width = 340,
         text = "Lobby:               (998) 880 00 40",  font = fontLatoRegular, fontSize = 14,
 	})
-	labelPhoneAdmin:setFillColor( 1 )
-	homeScreen:insert(labelPhoneAdmin)
+	labelPhoneLobby:setFillColor( 1 )
+	homeScreen:insert(labelPhoneLobby)
 	
 	lastY = h + 135
 	RestManager.getLastGuard()
