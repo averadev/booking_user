@@ -192,6 +192,21 @@ function scene:create( event )
     header:buildToolbar()
 	
 	local residencial = DBManager.getResidencial()
+	print(residencial)
+	print("haoajkowakdolakdaod")
+	local telAdministracion, telCaseta, telLobby
+	--residencial.telAdministracion
+	--residencial.telCaseta
+	--residencial.telLobby
+	if residencial ~= 0 then
+		telAdministracion = residencial[1].telAdministracion
+		telCaseta = residencial[1].telCaseta
+		telLobby = residencial[1].telLobby
+	else
+		telAdministracion = "000000000"
+		telCaseta = "000000000"
+		telLobby = "000000000"
+	end
 	
 	lastY = h + 135
 	
@@ -279,7 +294,7 @@ function scene:create( event )
 	labelPhoneAdmin  = display.newText( {   
          x = intW/2, y = lastY + 32,
 		 width = 340,
-        text = "Administración: " .. residencial.telAdministracion,  font = fontLatoRegular, fontSize = 14,
+        text = "Administración: " .. telAdministracion,  font = fontLatoRegular, fontSize = 14,
 	})
 	labelPhoneAdmin:setFillColor( 1 )
 	homeScreen:insert(labelPhoneAdmin)
@@ -289,7 +304,7 @@ function scene:create( event )
 	labelPhoneCaseta  = display.newText( {   
          x = intW/2, y = lastY + 32,
 		 width = 340,
-        text = "Caseta:             " .. residencial.telCaseta,  font = fontLatoRegular, fontSize = 14,
+        text = "Caseta:             " .. telCaseta,  font = fontLatoRegular, fontSize = 14,
 	})
 	labelPhoneCaseta:setFillColor( 1 )
 	homeScreen:insert(labelPhoneCaseta)
@@ -299,7 +314,7 @@ function scene:create( event )
 	labelPhoneLobby  = display.newText( {
          x = intW/2, y = lastY + 32,
 		 width = 340,
-        text = "Lobby:               " .. residencial.telLobby,  font = fontLatoRegular, fontSize = 14,
+        text = "Lobby:               " .. telLobby,  font = fontLatoRegular, fontSize = 14,
 	})
 	labelPhoneLobby:setFillColor( 1 )
 	homeScreen:insert(labelPhoneLobby)

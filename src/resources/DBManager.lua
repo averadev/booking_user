@@ -88,11 +88,14 @@ local dbManager = {}
 		local result = {}
 		openConnection( )
 		for row in db:nrows("SELECT * FROM residencial;") do
-			closeConnection( )
-			return  row
+			result[#result + 1] = row
 		end
 		closeConnection( )
-		return 1
+		if #result > 0 then
+			return result
+		else
+			return 0
+		end
 	end
 	
 	--actualiza los datos del admin
