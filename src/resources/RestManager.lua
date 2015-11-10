@@ -40,6 +40,8 @@ local RestManager = {}
                 local data = json.decode(event.response)
                 if data.success then
 					local items = data.items
+					local residencial = data.residencial
+					DBManager.insertResidencial(residencial)
 					if #items == 1 then
 						getMessageSignIn(data.message, 1)
 						DBManager.updateUser(items[1].id, items[1].email, items[1].contrasena, items[1].nombre, items[1].apellido, items[1].condominioId)
@@ -339,6 +341,64 @@ local RestManager = {}
 				if data.success then
 					local items = data.items
 					setItemsAdmin(items[1])
+                else
+					
+                end
+            end
+            return true
+        end
+        -- Do request
+        network.request( url, "GET", callback )
+		
+	end
+	
+	--obtiene el mensaje de visitante por id
+	RestManager.deleteMsgVisit = function(visitId)
+		local encoded = json.encode( visitId, { indent = true } )
+		
+		getLoadingLogin(400, "Cargando...")
+		local settings = DBManager.getSettings()
+        -- Set url
+        local url = settings.url
+        url = url.."api/deleteMsgVisit/format/json"
+        url = url.."/idApp/"..settings.idApp
+        url = url.."/idMSG/".. urlencode(encoded)
+	
+        local function callback(event)
+            if ( event.isError ) then
+            else
+                local data = json.decode(event.response)
+				if data.success then
+					refreshMessageVisit()
+                else
+					
+                end
+            end
+            return true
+        end
+        -- Do request
+        network.request( url, "GET", callback )
+	end
+	
+	--obtiene el mensaje de visitante por id
+	RestManager.deleteMsgAdmin = function(adminId)
+	
+		local encoded = json.encode( adminId, { indent = true } )
+		
+		getLoadingLogin(400, "Cargando...")
+		local settings = DBManager.getSettings()
+        -- Set url
+        local url = settings.url
+        url = url.."api/deleteMsgAdmin/format/json"
+        url = url.."/idApp/"..settings.idApp
+        url = url.."/idMSG/".. urlencode(encoded)
+	
+        local function callback(event)
+            if ( event.isError ) then
+            else
+                local data = json.decode(event.response)
+				if data.success then
+					refreshMessageAdmin()
                 else
 					
                 end

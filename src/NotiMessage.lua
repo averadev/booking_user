@@ -18,6 +18,8 @@ local scene = composer.newScene()
 
 --variables
 local NotiMessageScreen = display.newGroup()
+local groupASvContent = display.newGroup()
+local groupABtnSvContent = display.newGroup()
 
 --variables para el tamaño del entorno
 local intW = display.contentWidth
@@ -44,6 +46,8 @@ local itemsAdmin
 
 local noLeidoA = {}
 
+local idDeleteA = {}
+
 ---------------------------------------------------
 ------------------ Funciones ----------------------
 ---------------------------------------------------
@@ -67,18 +71,51 @@ function setItemsNotiAdmin( items )
 end
 
 function buildMensageItems( event)
-	
+
 	yMain = 10
+
+	svContent:insert(groupASvContent)
+	svContent:insert(groupABtnSvContent)
+	
+	groupABtnSvContent.alpha = 0
+	
+	local bgBtnDeleteAdmin = display.newRoundedRect( 290, yMain + 30, 170, 60, 5 )
+	bgBtnDeleteAdmin.anchorX = 0
+	--bgMessage.anchorY = 0
+	bgBtnDeleteAdmin:setFillColor( 184/255, 84/255, 84/255 )
+	groupABtnSvContent:insert(bgBtnDeleteAdmin)
+	
+	local paint = {
+			type = "gradient",
+			color1 = { 249/255, 67/255, 67/255 },
+			color2 = { 204/255, 38/255, 38/255},
+			direction = "down"
+	}
+	
+	local btnDeleteAdmin = display.newRoundedRect( 293, yMain + 30, 164, 54, 5 )
+	btnDeleteAdmin.anchorX = 0
+	--bgMessage.anchorY = 0
+	btnDeleteAdmin.fill = paint
+	btnDeleteAdmin:setFillColor( 1 )
+	groupABtnSvContent:insert(btnDeleteAdmin)
+	btnDeleteAdmin:addEventListener( 'tap', deleteAdmin )
+	
+	local txtBtnDeleteAdmin = display.newText( {
+		text = "Borrar\nseleccionados",
+		x = 375, y = yMain + 30,
+		font = fontLatoRegular, fontSize = 18, align = "center"
+	})
+	txtBtnDeleteAdmin:setFillColor( 1 )
+	groupABtnSvContent:insert(txtBtnDeleteAdmin)
 	
 	for y = 1, #itemsAdmin, 1 do
-       --[[ if elements[y].tipo == "3" then
-            if not isMessage then 
-                isMessage = true
-                yMain = 0 
-            end]]
-            
+	
+			idDeleteA[y] = 0
+	
+			itemsAdmin[y].posc = y
+	
 			local message = Message:new()
-			svContent:insert(message)
+			groupASvContent:insert(message)
 			message:build(itemsAdmin[y])
 			message.y = yMain
 			message.id = itemsAdmin[y].idXref
@@ -95,9 +132,9 @@ function buildMensageItems( event)
 			else
 				noLeidoA[y] =  display.newImage( "img/btn/mensaje-leido.png" )
             end
-			noLeidoA[y].x = 62
+			noLeidoA[y].x = 110
 			noLeidoA[y].y = yMain + 60
-			svContent:insert(noLeidoA[y])
+			groupASvContent:insert(noLeidoA[y])
             yMain = yMain + 110
 		--[[end]]
     end
@@ -114,13 +151,58 @@ function markReadAdmin( event )
 	if noLeidoA[event.target.posci] then
 		noLeidoA[event.target.posci]:removeSelf()
 		noLeidoA[event.target.posci] =  display.newImage( "img/btn/mensaje-leido.png" )
-		noLeidoA[event.target.posci].x = 62
+		noLeidoA[event.target.posci].x = 110
 		noLeidoA[event.target.posci].y = event.target.pocY + 60
 		svContent:insert(noLeidoA[event.target.posci])
 	end
 	
 	RestManager.markMessageRead( event.target.id, 1 )
 	RestManager.getMessageUnRead()
+	
+end
+
+--muestra y/o oculta el boton de eliminar visitas
+function showBtnDeleteAdmin(isTrue, isActive, idVisit, posc)
+
+	--print(posc)
+	
+	if isTrue then
+		groupASvContent.y = 60
+		groupABtnSvContent.alpha = 1
+		svContent:setScrollHeight(yMain + 60)
+	else
+		groupASvContent.y = 0
+		groupABtnSvContent.alpha = 0
+		svContent:setScrollHeight(yMain)
+	end
+	if isActive then
+		idDeleteA[posc] = idVisit
+	else
+		idDeleteA[posc] = 0
+	end
+	
+end
+
+--elimina las visitas selecionadas
+function deleteAdmin( event )
+	--table.remove(idDeleteA,2)
+	local adminDelete = {}
+	for i= 1, #idDeleteA, 1 do
+		if idDeleteA[i] ~= 0 then
+			adminDelete[#adminDelete + 1] = idDeleteA[i]
+		end
+	end
+	RestManager.deleteMsgAdmin(adminDelete)
+	return true
+end
+
+function refreshMessageAdmin()
+	
+	groupASvContent:removeSelf();
+	groupABtnSvContent:removeSelf();
+	groupASvContent = display.newGroup()
+	groupABtnSvContent = display.newGroup()
+	RestManager.getMessageToAdmin()
 	
 end
 

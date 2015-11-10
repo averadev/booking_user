@@ -18,6 +18,8 @@ local scene = composer.newScene()
 
 --variables
 local NotiVisitScreen = display.newGroup()
+local groupSvContent = display.newGroup()
+local groupBtnSvContent = display.newGroup()
 
 --variables para el tamaño del entorno
 local intW = display.contentWidth
@@ -32,6 +34,19 @@ local svContent
 local itemsVisit
 
 local noLeido = {}
+local idDeleteV = {}
+
+local fontLatoBold, fontLatoLight, fontLatoRegular
+local environment = system.getInfo( "environment" )
+if environment == "simulator" then
+	fontLatoBold = native.systemFontBold
+	fontLatoLight = native.systemFont
+	fontLatoRegular = native.systemFont
+else
+	fontLatoBold = "Lato-Bold"
+	fontLatoLight = "Lato-Light"
+	fontLatoRegular = "Lato-Regular"
+end
 
 ---------------------------------------------------
 ------------------ Funciones ----------------------
@@ -57,15 +72,45 @@ function buildVisitItems()
 	
 	yMain = 40
 	
+	svContent:insert(groupSvContent)
+	svContent:insert(groupBtnSvContent)
+	
+	groupBtnSvContent.alpha = 0
+	
+	local bgBtnDelete = display.newRoundedRect( 290, yMain + 4, 170, 60, 5 )
+	bgBtnDelete.anchorX = 0
+	--bgMessage.anchorY = 0
+	bgBtnDelete:setFillColor( 184/255, 84/255, 84/255 )
+	groupBtnSvContent:insert(bgBtnDelete)
+	
+	local paint = {
+			type = "gradient",
+			color1 = { 249/255, 67/255, 67/255 },
+			color2 = { 204/255, 38/255, 38/255},
+			direction = "down"
+	}
+	
+	local btnDelete = display.newRoundedRect( 293, yMain + 4, 164, 54, 5 )
+	btnDelete.anchorX = 0
+	--bgMessage.anchorY = 0
+	btnDelete.fill = paint
+	btnDelete:setFillColor( 1 )
+	groupBtnSvContent:insert(btnDelete)
+	btnDelete:addEventListener( 'tap', deleteVisit )
+	
+	local txtBtnDelete = display.newText( {
+		text = "Borrar\nseleccionados",
+		x = 375, y = yMain + 4,
+		font = fontLatoRegular, fontSize = 18, align = "center"
+	})
+	txtBtnDelete:setFillColor( 1 )
+	groupBtnSvContent:insert(txtBtnDelete)
+	
 	for y = 1, #itemsVisit, 1 do
-       --[[ if elements[y].tipo == "3" then
-            if not isMessage then 
-                isMessage = true
-                yMain = 0 
-            end]]
-            
+			idDeleteV[y] = 0
+            itemsVisit[y].posc = y
 			local visit = Visit:new()
-			svContent:insert(visit)
+			groupSvContent:insert(visit)
 			visit:build(itemsVisit[y])
 			visit.y = yMain
 			visit.id = itemsVisit[y].id
@@ -77,7 +122,7 @@ function buildVisitItems()
                 noLeido[y].x = 12
                 noLeido[y].y = yMain + 60
                 noLeido[y]:setFillColor( .18, .59, 0 )
-                svContent:insert(noLeido[y])
+                groupSvContent:insert(noLeido[y])
             end
             yMain = yMain + 130
 		--[[end]]
@@ -98,6 +143,50 @@ function markRead( event )
 	RestManager.markMessageRead( event.target.id, 2 )
 	RestManager.getMessageUnRead()
 	
+end
+
+--muestra y/o oculta el boton de eliminar visitas
+function showBtnDeleteVisit(isTrue, isActive, idVisit, posc)
+
+	--print(posc)
+	
+	if isTrue then
+		groupSvContent.y = 55
+		groupBtnSvContent.alpha = 1
+		svContent:setScrollHeight(yMain + 60)
+	else
+		groupSvContent.y = 0
+		groupBtnSvContent.alpha = 0
+		svContent:setScrollHeight(yMain)
+	end
+	if isActive then
+		idDeleteV[posc] = idVisit
+	else
+		idDeleteV[posc] = 0
+	end
+	
+end
+
+--elimina las visitas selecionadas
+function deleteVisit( event )
+	--table.remove(idDeleteV,2)
+	local visitDelete = {}
+	for i= 1, #idDeleteV, 1 do
+		if idDeleteV[i] ~= 0 then
+			visitDelete[#visitDelete + 1] = idDeleteV[i]
+		end
+	end
+	RestManager.deleteMsgVisit(visitDelete)
+	return true
+end
+
+--obtiene los mensajes de las visitas
+function refreshMessageVisit()
+	groupSvContent:removeSelf();
+	groupBtnSvContent:removeSelf();
+	groupSvContent = display.newGroup()
+	groupBtnSvContent = display.newGroup()
+	RestManager.getMessageToVisit()
 end
 
 ---------------------------------------------------

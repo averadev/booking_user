@@ -191,6 +191,8 @@ function scene:create( event )
     header.y = h
     header:buildToolbar()
 	
+	local residencial = DBManager.getResidencial()
+	
 	lastY = h + 135
 	
 	local borderRight = display.newRect( 48, lastY, 8, 440 )
@@ -277,7 +279,7 @@ function scene:create( event )
 	labelPhoneAdmin  = display.newText( {   
          x = intW/2, y = lastY + 32,
 		 width = 340,
-        text = "Administración: (998) 880 00 00",  font = fontLatoRegular, fontSize = 14,
+        text = "Administración: " .. residencial.telAdministracion,  font = fontLatoRegular, fontSize = 14,
 	})
 	labelPhoneAdmin:setFillColor( 1 )
 	homeScreen:insert(labelPhoneAdmin)
@@ -287,17 +289,17 @@ function scene:create( event )
 	labelPhoneCaseta  = display.newText( {   
          x = intW/2, y = lastY + 32,
 		 width = 340,
-        text = "Caseta:             (998) 880 00 20",  font = fontLatoRegular, fontSize = 14,
+        text = "Caseta:             " .. residencial.telCaseta,  font = fontLatoRegular, fontSize = 14,
 	})
 	labelPhoneCaseta:setFillColor( 1 )
 	homeScreen:insert(labelPhoneCaseta)
 	
 	lastY = lastY + 20
 	
-	labelPhoneLobby  = display.newText( {   
+	labelPhoneLobby  = display.newText( {
          x = intW/2, y = lastY + 32,
 		 width = 340,
-        text = "Lobby:               (998) 880 00 40",  font = fontLatoRegular, fontSize = 14,
+        text = "Lobby:               " .. residencial.telLobby,  font = fontLatoRegular, fontSize = 14,
 	})
 	labelPhoneLobby:setFillColor( 1 )
 	homeScreen:insert(labelPhoneLobby)

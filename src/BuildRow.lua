@@ -22,10 +22,11 @@ end
 ---------------------------------------------------------------------------------
 Message = {}
 local assigned = 0
+local contDeleteAdmin = 0
 function Message:new()
     -- Variables
     local self = display.newGroup()
-	
+	local btnCheckInA
 	function AssignedCoupon(item)
 		assigned = item
 	end
@@ -46,6 +47,30 @@ function Message:new()
             })
 		end
     end
+	
+	function checkBoxDeleteA( event )
+	
+		local active
+		if event.target.check == 0 then
+			btnCheckInA.alpha = 1
+			event.target.check = 1
+			contDeleteAdmin = contDeleteAdmin + 1
+			active = true
+		else
+			btnCheckInA.alpha = 0
+			event.target.check = 0
+			contDeleteAdmin = contDeleteAdmin - 1
+			active = false
+		end
+		
+		if contDeleteAdmin > 0 then
+			showBtnDeleteAdmin(true, active, event.target.id, event.target.posc)
+		else
+			showBtnDeleteAdmin(false,active, event.target.id, event.target.posc)
+		end
+		
+		return true
+	end
     
     -- Creamos la pantalla del menu
     --function self:build(isBg, item, image)
@@ -78,17 +103,17 @@ function Message:new()
         -- Agregamos textos
         local txtPartner0 = display.newText( {
             text = "DE: ",     
-            x = 45, y = -17,
+            x = 95, y = -17,
             width = 340,
             font = fontLatoBold, fontSize = 16, align = "left"
         })
         txtPartner0:setFillColor( 0 )
         container:insert(txtPartner0)
-		
+	
         local txtPartner = display.newText( {
             --text = item.partner,
 			text = item.nombreAdmin .. " " .. item.apellidosAdmin,
-            x = 55, y = -17,
+            x = 105, y = -17,
             width = 300,
             font = fontLatoBold, fontSize = 16, align = "left"
         })
@@ -97,7 +122,7 @@ function Message:new()
         
         local txtTitle0 = display.newText( {
 			text = "Asunto: ",
-            x = 45, y = 7,
+            x = 95, y = 7,
             width = 340, height = 0,
             font = fontLatoBold, fontSize = 15, align = "left"
         })
@@ -105,8 +130,8 @@ function Message:new()
         container:insert(txtTitle0)
 
         local txtInfo = display.newText( {
-            text = item.asunto:sub(1,35).."...",
-            x = 35, y = 30, width = 320,
+            text = item.asunto:sub(1,30).."...",
+            x = 85, y = 30, width = 320,
             font = fontLatoLight, fontSize = 14, align = "left"
         })
         txtInfo:setFillColor( .3 )
@@ -115,6 +140,23 @@ function Message:new()
         local btnForward = display.newImage( "img/btn/btnForward.png" )
         btnForward:translate( 200, 18)
         container:insert( btnForward )
+		
+		local bgCheckA = display.newRect( -190, 0, 50, 50 )
+        bgCheckA:setFillColor( 1 )
+		bgCheckA.check = 0
+		bgCheckA.id = item.id
+		bgCheckA.posc = item.posc
+        container:insert( bgCheckA )
+		bgCheckA:addEventListener( 'tap', checkBoxDeleteA )
+		
+		local btnCheckOutA = display.newImage( "img/btn/select0.png" )
+        btnCheckOutA:translate( -191, 0)
+        container:insert( btnCheckOutA )
+		
+		btnCheckInA = display.newImage( "img/btn/select1.png" )
+        btnCheckInA:translate( -188, -2)
+		btnCheckInA.alpha = 0
+        container:insert( btnCheckInA )
         
     end
 
@@ -123,9 +165,11 @@ end
 
 Visit = {}
 local assigned = 0
+local contDeleteVisit = 0
 function Visit:new()
     -- Variables
     local self = display.newGroup()
+	local btnCheckIn
 	
 	function AssignedCoupon(item)
 		assigned = item
@@ -147,6 +191,29 @@ function Visit:new()
             })
 		end
     end
+	
+	function checkBoxDelete( event )
+		local active
+		if event.target.check == 0 then
+			btnCheckIn.alpha = 1
+			event.target.check = 1
+			contDeleteVisit = contDeleteVisit + 1
+			active = true
+		else
+			btnCheckIn.alpha = 0
+			event.target.check = 0
+			contDeleteVisit = contDeleteVisit - 1
+			active = false
+		end
+		
+		if contDeleteVisit > 0 then
+			showBtnDeleteVisit(true, active, event.target.id, event.target.posc)
+		else
+			showBtnDeleteVisit(false,active, event.target.id, event.target.posc)
+		end
+		
+		return true
+	end
     
     -- Creamos la pantalla del menu
     --function self:build(isBg, item, image)
@@ -168,7 +235,7 @@ function Visit:new()
         container:insert( maxShape )
 		
 		local imgVisit = display.newImage( "img/btn/visitas.png" )
-		imgVisit.x= -177
+		imgVisit.x= -125
 		imgVisit.y = 12
         container:insert(imgVisit)
 
@@ -195,8 +262,8 @@ function Visit:new()
         container:insert(txtHora)
         
         local txtVisit = display.newText( {
-			text = item.nombreVisitante:sub(1,25),
-            x = 25, y = 0,
+			text = item.nombreVisitante:sub(1,20),
+            x = 75, y = 0,
             width = 300,
             font = fontLatoBold, fontSize = 22, align = "left"
         })
@@ -205,8 +272,8 @@ function Visit:new()
 
         local txtInfo = display.newText( {
             --text = item.detail:sub(1,42).."...",
-			text = item.motivo:sub(1,45),
-            x = 35, y = 32, width = 320,
+			text = item.motivo:sub(1,40),
+            x = 85, y = 32, width = 320,
             font = fontLatoLight, fontSize = 16, align = "left"
         })
         txtInfo:setFillColor( .3 )
@@ -215,6 +282,23 @@ function Visit:new()
         local btnForward = display.newImage( "img/btn/btnForward.png" )
         btnForward:translate( 200, 18)
         container:insert( btnForward )
+		
+		local bgCheck = display.newRect( -190, 5, 50, 50 )
+        bgCheck:setFillColor( 1 )
+		bgCheck.check = 0
+		bgCheck.id = item.id
+		bgCheck.posc = item.posc
+        container:insert( bgCheck )
+		bgCheck:addEventListener( 'tap', checkBoxDelete )
+		
+		local btnCheckOut = display.newImage( "img/btn/select0.png" )
+        btnCheckOut:translate( -191, 6)
+        container:insert( btnCheckOut )
+		
+		btnCheckIn = display.newImage( "img/btn/select1.png" )
+        btnCheckIn:translate( -189, 4)
+		btnCheckIn.alpha = 0
+        container:insert( btnCheckIn )
         
     end
 

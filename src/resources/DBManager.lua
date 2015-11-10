@@ -83,6 +83,18 @@ local dbManager = {}
 		return 1
 	end
 	
+	--obtiene los datos de la residencial
+	dbManager.getResidencial = function()
+		local result = {}
+		openConnection( )
+		for row in db:nrows("SELECT * FROM residencial;") do
+			closeConnection( )
+			return  row
+		end
+		closeConnection( )
+		return 1
+	end
+	
 	--actualiza los datos del admin
     dbManager.updateUser = function(idApp, email, password, name, apellido, condominio)
 		openConnection( )
@@ -109,12 +121,24 @@ local dbManager = {}
 		closeConnection( )
 	end
 	
+	--inserta los datos del condominio
+	dbManager.insertResidencial = function(items)
+		openConnection( )
+			for i = 1, #items, 1 do
+				local query = "INSERT INTO residencial VALUES ('" .. items[i].id .."', '" .. items[i].nombre .."', '" .. items[i].telAdministracion .."', '" .. items[i].telCaseta .."', '" .. items[i].telLobby .."');"
+				db:exec( query )
+			end
+		closeConnection( )
+	end
+	
 	--limpia la tabla de admin, guardia y condominio
     dbManager.clearUser = function()
         openConnection( )
         query = "UPDATE config SET idApp = 0, email = '', password = '', name = '', apellido = '', condominioId = 0;"
         db:exec( query )
 		query = "delete from condominios;"
+        db:exec( query )
+		query = "delete from residencial;"
         db:exec( query )
 		closeConnection( )
     end
@@ -130,7 +154,8 @@ local dbManager = {}
 		local query = "CREATE TABLE IF NOT EXISTS condominios (id INTEGER, idUser INTEGER, nombre TEXT );"
 		db:exec( query )
 		
-		
+		local query = "CREATE TABLE IF NOT EXISTS residencial (id INTEGER, nombre TEXT, telAdministracion TEXT, telCaseta TEXT, telLobby TEXT);"
+		db:exec( query )
 
         -- Return if have connection
 		for row in db:nrows("SELECT idApp, condominioId FROM config;") do
