@@ -114,8 +114,8 @@ function buildItemGuardTurn()
 	
 	--RestManager.getLastGuard()
 	
-	--local imgPhotoGuard = display.newImage( itemsGuard.foto, system.TemporaryDirectory )
-	local imgPhotoGuard = display.newImage( "img/bgk/fotoGuard.jpeg" )
+	local imgPhotoGuard = display.newImage( itemsGuard.foto, system.TemporaryDirectory )
+	--local imgPhotoGuard = display.newImage( "img/bgk/fotoGuard.jpeg" )
 	imgPhotoGuard.anchorY = 0
 	imgPhotoGuard.x= intW/2
 	imgPhotoGuard.y = lastY + 3
@@ -192,8 +192,6 @@ function scene:create( event )
     header:buildToolbar()
 	
 	local residencial = DBManager.getResidencial()
-	print(residencial)
-	print("haoajkowakdolakdaod")
 	local telAdministracion, telCaseta, telLobby
 	--residencial.telAdministracion
 	--residencial.telCaseta
