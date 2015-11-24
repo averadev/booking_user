@@ -157,7 +157,7 @@ function scene:create( event )
 	bgRectWhite:setFillColor( 1 )
 	homeScreen:insert(bgRectWhite)
 	
-	local bgRectGreen = display.newRect( 0, h + 65, 150, 49 )
+	local bgRectGreen = display.newRect( 148, h + 65, 4, 49 )
 	bgRectGreen.anchorX = 0
 	bgRectGreen.anchorY = 0
 	bgRectGreen:setFillColor( 0, 148/255, 49/255 ) 
@@ -173,11 +173,11 @@ function scene:create( event )
 	local condoInfo = DBManager.getCondominiumById(settings.condominioId)
 	
 	labelNumCondo  = display.newText( {   
-         x = 120, y = h + 88,
-		width = 100,
-        text = condoInfo.nombre,  font = fontLatoBold, fontSize = 20,
+         x = 100, y = h + 88,
+		width = 100, align = 'center',
+        text = condoInfo.nombre,  font = fontLatoBold, fontSize = 22,
 	})
-	labelNumCondo:setFillColor( 1 )
+	labelNumCondo:setFillColor( 0 )
 	homeScreen:insert(labelNumCondo)
 	
 	local lineMenu = display.newRect( 0, h + 65 + 48, display.contentWidth, 1 )

@@ -89,12 +89,10 @@ function MenuLeft:new()
 		bgSignOut:addEventListener("tap", SignOut)
 		selfL:insert(bgSignOut)
 	
-		local lineMenu1 = display.newRect( 0, intH - 89, 350, 4 )
+		local lineMenu1 = display.newRect( 0, intH - 89, 350, 2 )
         lineMenu1.anchorX = 0
         lineMenu1.anchorY = 0
-        lineMenu1:setFillColor( 195/255, 109/255, 82/255 )
-		lineMenu1.strokeWidth = 2
-		lineMenu1:setStrokeColor( 248/255, 6/255, 4/255 )
+        lineMenu1:setFillColor( 0, 148/255, 49/255 )
         selfL:insert(lineMenu1)
 		
 		local imgBtnSignOut = display.newImage( "img/btn/exit.png" )

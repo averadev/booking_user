@@ -314,7 +314,7 @@ function Header:new()
 		local lineToolbar = display.newRect( 0, 63, display.contentWidth, 2 )
         lineToolbar.anchorX = 0
         lineToolbar.anchorY = 0
-        lineToolbar:setFillColor( 213/255, 67/255, 68/255 )
+        lineToolbar:setFillColor( 246/255, 219/255, 0 )
         self:insert(lineToolbar)
 		
 		local iconTool1 = display.newImage( "img/btn/menu.png" )
