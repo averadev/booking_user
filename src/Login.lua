@@ -385,9 +385,9 @@ function scene:create( event )
 	lastY = lastY + 120
 	
 	btnSignLogin = display.newRoundedRect( intW/2, lastY, 330, 60, 10 )
-	btnSignLogin:setFillColor( 251/255, 1/255, 2/255 )
+	btnSignLogin:setFillColor( 0, 148/255, 49/255 )
 	btnSignLogin.strokeWidth = 2
-	btnSignLogin:setStrokeColor( 186/255, 1/255, 1/255 )
+	btnSignLogin:setStrokeColor( 0, 80/255, 10/255 )
 	groupSign:insert(btnSignLogin)
 	btnSignLogin:addEventListener( 'tap', SignIn)
 	
@@ -492,24 +492,7 @@ function scene:create( event )
 	labelContinueLogin:setFillColor( 1 )
 	groupSign2:insert(labelContinueLogin)
 	
-	--------------------------
-	----label recuerdame
 	
-	lastY = intH - 50
-	
-	---label recordar contraseña
-	local labelRemenberPassword = display.newText( {   
-        x = intW/2, y = lastY,
-        text = "Restrablecer contraseña",  font = fontLatoLight, fontSize = 26
-	})
-	labelRemenberPassword:setFillColor( 1 )
-	loginScreen:insert(labelRemenberPassword)
-	
-	local lineRemenberPassword = display.newLine( 90, lastY + 15 , 390, lastY + 15 )
-	lineRemenberPassword:setStrokeColor( 1 )
-	lineRemenberPassword.strokeWidth = 2
-	loginScreen:insert(lineRemenberPassword)
-
 end
 
 -- "scene:show()"
