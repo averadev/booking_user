@@ -80,13 +80,13 @@ function buildVisitItems()
 	local bgBtnDelete = display.newRoundedRect( 290, yMain + 4, 170, 60, 5 )
 	bgBtnDelete.anchorX = 0
 	--bgMessage.anchorY = 0
-	bgBtnDelete:setFillColor( 184/255, 84/255, 84/255 )
+	bgBtnDelete:setFillColor( 0, 80/255, 0  )
 	groupBtnSvContent:insert(bgBtnDelete)
 	
 	local paint = {
 			type = "gradient",
-			color1 = { 249/255, 67/255, 67/255 },
-			color2 = { 204/255, 38/255, 38/255},
+			color1 = { 0, 135/255, 0/255 },
+			color2 = { 0, 91/255, 0 },
 			direction = "down"
 	}
 	

@@ -82,13 +82,13 @@ function buildMensageItems( event)
 	local bgBtnDeleteAdmin = display.newRoundedRect( 290, yMain + 30, 170, 60, 5 )
 	bgBtnDeleteAdmin.anchorX = 0
 	--bgMessage.anchorY = 0
-	bgBtnDeleteAdmin:setFillColor( 184/255, 84/255, 84/255 )
+	bgBtnDeleteAdmin:setFillColor( 0, 80/255, 0 )
 	groupABtnSvContent:insert(bgBtnDeleteAdmin)
 	
 	local paint = {
 			type = "gradient",
-			color1 = { 249/255, 67/255, 67/255 },
-			color2 = { 204/255, 38/255, 38/255},
+			color1 = { 0, 135/255, 0/255 },
+			color2 = { 0, 91/255, 0 },
 			direction = "down"
 	}
 	
