@@ -101,12 +101,20 @@ function buildMensageItems( event)
 	btnDeleteAdmin:addEventListener( 'tap', deleteAdmin )
 	
 	local txtBtnDeleteAdmin = display.newText( {
-		text = "Borrar\nseleccionados",
-		x = 375, y = yMain + 30,
+		text = "Borrar",
+		x = 375, y = yMain + 20,
 		font = fontLatoRegular, fontSize = 18, align = "center"
 	})
 	txtBtnDeleteAdmin:setFillColor( 1 )
 	groupABtnSvContent:insert(txtBtnDeleteAdmin)
+    
+    local txtBtnDeleteAdmin2 = display.newText( {
+		text = "seleccionados",
+		x = 375, y = yMain + 40,
+		font = fontLatoRegular, fontSize = 18, align = "center"
+	})
+	txtBtnDeleteAdmin2:setFillColor( 1 )
+	groupABtnSvContent:insert(txtBtnDeleteAdmin2)
 	
 	for y = 1, #itemsAdmin, 1 do
 	

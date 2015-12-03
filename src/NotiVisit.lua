@@ -99,12 +99,20 @@ function buildVisitItems()
 	btnDelete:addEventListener( 'tap', deleteVisit )
 	
 	local txtBtnDelete = display.newText( {
-		text = "Borrar\nseleccionados",
-		x = 375, y = yMain + 4,
+		text = "Borrar",
+		x = 375, y = yMain - 6,
 		font = fontLatoRegular, fontSize = 18, align = "center"
 	})
 	txtBtnDelete:setFillColor( 1 )
 	groupBtnSvContent:insert(txtBtnDelete)
+	
+	local txtBtnDelete2 = display.newText( {
+		text = "seleccionados",
+		x = 375, y = yMain + 14,
+		font = fontLatoRegular, fontSize = 18, align = "center"
+	})
+	txtBtnDelete2:setFillColor( 1 )
+	groupBtnSvContent:insert(txtBtnDelete2)
 	
 	for y = 1, #itemsVisit, 1 do
 			idDeleteV[y] = 0
