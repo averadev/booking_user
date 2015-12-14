@@ -171,8 +171,6 @@ end
 
 --muestra y/o oculta el boton de eliminar visitas
 function showBtnDeleteAdmin(isTrue, isActive, idVisit, posc)
-
-	--print(posc)
 	
 	if isTrue then
 		groupASvContent.y = 60

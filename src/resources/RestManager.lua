@@ -88,7 +88,6 @@ local RestManager = {}
         url = url.."/idApp/"..idUser
 		url = url.."/playerId/"..urlencode(Globals.playerIdToken)
 		--url = url.."/playerId/"..urlencode('hola')
-		print(url)
 	
         local function callback(event)
             if ( event.isError ) then
@@ -172,7 +171,6 @@ local RestManager = {}
             else
                 local data = json.decode(event.response)
                 if data.success then
-					print(data.items)
 					if data.items then
 						local items = data.items
 						setElementGuard(items)
@@ -199,15 +197,15 @@ local RestManager = {}
         url = url.."api/getMessageUnRead/format/json"
         url = url.."/idApp/"..settings.idApp
         url = url.."/condominium/"..settings.condominioId
-	
         local function callback(event)
             if ( event.isError ) then
+				native.showAlert( "Booking", "Erro con el servidor", { "OK"})
             else
                 local data = json.decode(event.response)
 				if data.success then
 					createNotBubble(data.items, data.items2)
                 else
-                    --native.showAlert( "Go Deals", data.message, { "OK"})
+                   native.showAlert( "Booking", "Erro con el servidor", { "OK"})
                 end
             end
             return true
@@ -300,8 +298,6 @@ local RestManager = {}
 	
 	--obtiene los mensajes de visitantes
 	RestManager.getMessageToAdmin = function()
-	
-		print('hola')
 		
 		getLoadingLogin(400, "Cargando Mensajes")
 		local settings = DBManager.getSettings()
@@ -316,7 +312,6 @@ local RestManager = {}
             else
                 local data = json.decode(event.response)
 				if data.success then
-					print('hola')
 					local items = data.items
 					setItemsNotiAdmin(items)
                 else

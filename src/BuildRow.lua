@@ -144,7 +144,7 @@ function Message:new()
 		local bgCheckA = display.newRect( -190, 0, 50, 50 )
         bgCheckA:setFillColor( 1 )
 		bgCheckA.check = 0
-		bgCheckA.id = item.id
+		bgCheckA.id = item.idXref
 		bgCheckA.posc = item.posc
         container:insert( bgCheckA )
 		bgCheckA:addEventListener( 'tap', checkBoxDeleteA )
