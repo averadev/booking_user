@@ -140,7 +140,7 @@ function Header:new()
 		
 		totalBubbleA = totalA
 		totalBubbleV = totalV
-	
+		
 		if totalBubbleA > 0 then
 		
 			if not groupNoBubbleA then
@@ -167,13 +167,6 @@ function Header:new()
 				txtNoBubbleA.text = totalBubbleA
 			end
 		else
-		
-			--[[txtNoBubbleA = display.newText( {
-				x = 361, y = 20,
-				text = "", font = "Lato-Regular", fontSize = 12,
-			})
-			txtNoBubbleA:setFillColor( 1 )]]
-			--groupNoBubbleA:insert(txtNoBubbleA)
 		
 			if groupNoBubbleA then
 				groupNoBubbleA:removeSelf()

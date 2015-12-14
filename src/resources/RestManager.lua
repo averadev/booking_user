@@ -35,7 +35,7 @@ local RestManager = {}
         local function callback(event)
             if ( event.isError ) then
 				deleteLoadingLogin()
-				native.showAlert( "Booking", event.isError, { "OK"})
+				native.showAlert( "Plantec Resident", event.isError, { "OK"})
             else
                 local data = json.decode(event.response)
                 if data.success then
@@ -199,13 +199,13 @@ local RestManager = {}
         url = url.."/condominium/"..settings.condominioId
         local function callback(event)
             if ( event.isError ) then
-				native.showAlert( "Booking", "Erro con el servidor", { "OK"})
+				native.showAlert( "Plantec Resident", "Erro con el servidor", { "OK"})
             else
                 local data = json.decode(event.response)
 				if data.success then
 					createNotBubble(data.items, data.items2)
                 else
-                   native.showAlert( "Booking", "Erro con el servidor", { "OK"})
+                   native.showAlert( "Plantec Resident", "Erro con el servidor", { "OK"})
                 end
             end
             return true
