@@ -199,13 +199,13 @@ local RestManager = {}
         url = url.."/condominium/"..settings.condominioId
         local function callback(event)
             if ( event.isError ) then
-				native.showAlert( "Plantec Resident", "Erro con el servidor", { "OK"})
+				native.showAlert( "Plantec Resident", "Error con el servidor", { "OK"})
             else
                 local data = json.decode(event.response)
 				if data.success then
 					createNotBubble(data.items, data.items2)
                 else
-                   native.showAlert( "Plantec Resident", "Erro con el servidor", { "OK"})
+                   native.showAlert( "Plantec Resident", "Error con el servidor", { "OK"})
                 end
             end
             return true
@@ -257,7 +257,7 @@ local RestManager = {}
 					local items = data.items
 					setItemsNotiVisit(items)
                 else
-                   -- native.showAlert( "Go Deals", data.message, { "OK"})
+                    native.showAlert( "Plantec Resident", data.message, { "OK"})
                 end
             end
             return true
@@ -315,7 +315,7 @@ local RestManager = {}
 					local items = data.items
 					setItemsNotiAdmin(items)
                 else
-                   -- native.showAlert( "Go Deals", data.message, { "OK"})
+					native.showAlert( "Plantec Resident", data.message, { "OK"})
                 end
             end
             return true
