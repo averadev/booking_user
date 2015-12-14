@@ -77,7 +77,7 @@ function loadImageGuard()
 		else
 			event.target.alpha = 0
 			itemsGuard.foto = "imgGuardTurn." .. extImg
-			buildItemGuardTurn()
+			buildItemGuardTurn(1)
 		end
 	end
 		-- Descargamos de la nube
@@ -86,14 +86,21 @@ function loadImageGuard()
 
 end
 
-function buildItemGuardTurn()
+function buildItemGuardTurn(typePhoto)
 
 	lastY = lastY + 25
+	
+	local textName
+	if typePhoto == 1 then
+		textName = "En servicio: " .. itemsGuard.nombre .. " " .. itemsGuard.apellidos
+	else
+		textName = itemsGuard.nombre
+	end
 
 	local labelNameUserHome = display.newText( {   
         x = intW/2, y = lastY,
 		width = 400,
-        text = "En servicio: " .. itemsGuard.nombre .. " " .. itemsGuard.apellidos,  font = fontLatoRegular, fontSize = 17, align = "center",
+        text = textName,  font = fontLatoRegular, fontSize = 17, align = "center",
 	})
 	labelNameUserHome:setFillColor( 0 )
 	homeScreen:insert(labelNameUserHome)
@@ -113,8 +120,12 @@ function buildItemGuardTurn()
 	homeScreen:insert(bgPhoto2)
 	
 	--RestManager.getLastGuard()
-	
-	local imgPhotoGuard = display.newImage( itemsGuard.foto, system.TemporaryDirectory )
+	local imgPhotoGuard
+	if typePhoto == 1 then
+		imgPhotoGuard = display.newImage( itemsGuard.foto, system.TemporaryDirectory )
+	else
+		imgPhotoGuard = display.newImage( itemsGuard.foto )
+	end
 	--local imgPhotoGuard = display.newImage( "img/bgk/fotoGuard.jpeg" )
 	imgPhotoGuard.anchorY = 0
 	imgPhotoGuard.x= intW/2
@@ -123,6 +134,16 @@ function buildItemGuardTurn()
 	imgPhotoGuard.height = 344
 	homeScreen:insert( imgPhotoGuard )
 
+end
+
+-- muestra un guardia por defecto
+function paintGuardDefault()
+	
+	itemsGuard = {}
+	itemsGuard.nombre = "SIN GUARDIAS REGISTRADOS"
+	itemsGuard.foto =  "img/btn/visitas.png"
+	
+	buildItemGuardTurn(2)
 end
 
 ---------------------------------------------------

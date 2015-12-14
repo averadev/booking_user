@@ -168,12 +168,19 @@ local RestManager = {}
 	
         local function callback(event)
             if ( event.isError ) then
+				paintGuardDefault()
             else
                 local data = json.decode(event.response)
                 if data.success then
-					local items = data.items
-					setElementGuard(items)
+					print(data.items)
+					if data.items then
+						local items = data.items
+						setElementGuard(items)
+					else
+						paintGuardDefault()
+					end
                 else
+					paintGuardDefault()
                 end
             end
             return true
