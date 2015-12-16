@@ -306,16 +306,14 @@ function scene:create( event )
 	bgLogin.y = h
 	loginScreen:insert(bgLogin)
 	
-	lastY = 60 + h
+	lastY = 90 + h
 	
-	local labelWelcomeLogin = display.newText( {   
-        x = intW/2, y = lastY, 
-        text = "¡BIENVENIDO!",  font = fontLatoBold, fontSize = 36
-	})
-	labelWelcomeLogin:setFillColor( 1 )
-	groupSign:insert(labelWelcomeLogin)
+    local logoSmall = display.newImage( "img/btn/logoSmall.png" )
+    logoSmall.x = intW / 2
+	logoSmall.y = lastY
+	groupSign:insert(logoSmall)
 	
-	lastY = lastY + 90
+	lastY = lastY + 120
 	
 	local labelWelcomeLogin = display.newText( {   
         x = intW/2, y = lastY, width = intW - 50,
