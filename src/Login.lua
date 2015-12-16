@@ -311,7 +311,7 @@ function scene:create( event )
     local logoSmall = display.newImage( "img/btn/logoSmall.png" )
     logoSmall.x = intW / 2
 	logoSmall.y = lastY
-	loginScreen:insert(logoSmall)
+	groupSign:insert(logoSmall)
 	
 	lastY = lastY + 120
 	
