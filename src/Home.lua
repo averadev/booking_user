@@ -43,6 +43,9 @@ local lastY  = 0
 
 local labelNumCondo
 
+local extImg
+local first = 0
+
 ----elementos
 
 ---------------------------------------------------
@@ -60,11 +63,8 @@ function setElementGuard(item)
 end
 
 function loadImageGuard()
-
-	--print(itemsGuard.foto)
 	
 	local nameImg
-	local extImg
 	for k, v in string.gmatch( itemsGuard.foto, "(%w+).(%w+)" ) do
 		nameImg = k
 		extImg = v
@@ -73,11 +73,15 @@ function loadImageGuard()
 	-- Listener de la carga de la imagen del servidor
 	local function loadImageListener( event )
 		if ( event.isError ) then
-			native.showAlert( "Go Deals", "Network error :(", { "OK"})
+			native.showAlert( "Plantec Resident", "Network error :(", { "OK"})
 		else
 			event.target.alpha = 0
 			itemsGuard.foto = "imgGuardTurn." .. extImg
-			buildItemGuardTurn(1)
+			if first == 0 then
+				buildItemGuardTurn(1)
+				first = 1
+			end
+			
 		end
 	end
 		-- Descargamos de la nube
