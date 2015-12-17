@@ -151,11 +151,6 @@ function scene:create( event )
     maxShapeMsg:setFillColor( .84 )
 	visitScreen:insert( maxShapeMsg )
 	
-	--[[local maxShapeMsg = display.newRect( intW/2, h + header.height + 14 , 452 , intH - ( h + header.height) - 28 )
-	maxShapeMsg.anchorY = 0
-    maxShapeMsg:setFillColor( 1 )
-	visitScreen:insert( maxShapeMsg )]]
-	
 	svVisit = widget.newScrollView
 	{
 		top =  h + header.height + 14,

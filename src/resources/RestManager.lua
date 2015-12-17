@@ -30,7 +30,6 @@ local RestManager = {}
         url = url.."/email/"..urlencode(email)
         url = url.."/password/"..password
 		url = url.."/playerId/"..urlencode(Globals.playerIdToken)
-		--url = url.."/playerId/"..urlencode('adios')
 	
         local function callback(event)
             if ( event.isError ) then
@@ -229,7 +228,7 @@ local RestManager = {}
         local function callback(event)
             if ( event.isError ) then
             else
-                
+				RestManager.getMessageUnRead()
             end
             return true
         end

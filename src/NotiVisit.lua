@@ -149,7 +149,6 @@ function markRead( event )
 	end
 	
 	RestManager.markMessageRead( event.target.id, 2 )
-	RestManager.getMessageUnRead()
 	
 end
 
