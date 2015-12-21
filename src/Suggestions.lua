@@ -75,6 +75,7 @@ end
 function messageSent()
 	txtSubject.text =''
 	txtMessage.text = ''
+	btnSendSuggestion:addEventListener( 'tap', sendSendSuggestion )
 end
 
 --regresa los textField a su lugar con coordenada x
