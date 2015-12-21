@@ -424,17 +424,20 @@ local RestManager = {}
         local function callback(event)
             if ( event.isError ) then
 				getMessageSignIn("Error al enviar el mensaje", 2)
+				messageSent(1)
             else
                 local data = json.decode(event.response)
 				if data then
 					if data.success then
 						getMessageSignIn(data.message, 1)
-						messageSent()
+						messageSent(2)
 					else
 						getMessageSignIn("Error al enviar el mensaje", 2)
+						messageSent(1)
 					end
 				else
 					getMessageSignIn("Error al enviar el mensaje", 2)
+					messageSent(1)
 				end
             end
 			deleteLoadingLogin()

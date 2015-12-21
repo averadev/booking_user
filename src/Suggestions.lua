@@ -61,8 +61,8 @@ function sendSendSuggestion( event )
 	if txtSubject.text ~='' and txtMessage.text ~= '' then
 		getLoadingLogin(600,"Enviando...")
 		btnSendSuggestion:removeEventListener( 'tap', sendSendSuggestion )
-		--RestManager.sendSuggestion('hola','como estas')
-		RestManager.sendSuggestion(txtSubject.text,txtMessage.text)
+		RestManager.sendSuggestion('hola','como estas')
+		--RestManager.sendSuggestion(txtSubject.text,txtMessage.text)
 	else
 		NewAlert('Plantec Resident','Campos vacios',1)
 		moveGrpTextField(1)
@@ -72,9 +72,11 @@ function sendSendSuggestion( event )
 end
 
 --returna cuando se envia el mensaje
-function messageSent()
-	txtSubject.text =''
-	txtMessage.text = ''
+function messageSent(typeM)
+	if typeM == 2 then
+		txtSubject.text =''
+		txtMessage.text = ''
+	end
 	btnSendSuggestion:addEventListener( 'tap', sendSendSuggestion )
 end
 
