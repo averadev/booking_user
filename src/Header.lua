@@ -31,28 +31,27 @@ function Header:new()
 	local self = display.newGroup()
 	
 	function showMessage( event )
-	
 		if composer.getSceneName( "current" ) ~= "src.NotiMessage" then
             composer.removeScene("src.NotiMessage")
 			composer.gotoScene( "src.NotiMessage", { time = 400, effect = "slideLeft" })
 			moveNoBubbleLeft()
         end
-	
 	end
 	
 	function showVisit( event )
-		
 		if composer.getSceneName( "current" ) ~= "src.NotiVisit" then
             composer.removeScene("src.NotiVisit")
 			composer.gotoScene( "src.NotiVisit", { time = 400, effect = "slideLeft" })
 			moveNoBubbleLeft()
         end
-		
 	end
+	
+	------------------------------------------------
+	--------- desplazamiento del menu --------------
+	------------------------------------------------
 	
 	--mostramos el menu izquierdo
 	function showMenuLeft( event )
-		
 		if groupNoBubbleA then groupNoBubbleA.x = 500 end
 		if groupNoBubbleV then groupNoBubbleV.x = 500 end
 		local screen = getScreen()
@@ -61,6 +60,9 @@ function Header:new()
 		transition.to( menuScreenLeft, { x = 0, time = 400, transition = easing.outExpo } )
 		screen = nil
 		menuActive = true
+		if composer.getSceneName( "current" ) == "src.Suggestions" then
+			moveGrpTextField(1)
+        end
 		return true
 	end
 	
@@ -80,25 +82,15 @@ function Header:new()
 		end
 		screen = nil
 		menuActive = false
+		if composer.getSceneName( "current" ) == "src.Suggestions" then
+			moveGrpTextField(2)
+        end
 		return true
 	end
 	
-	--obtenemos el grupo de cada escena
-	function getScreen()
-		local currentScene = composer.getSceneName( "current" )
-		if currentScene == "src.Home" then
-			return getScreenH()
-		elseif currentScene == "src.NotiMessage" then
-			return getScreenMA()
-		elseif currentScene == "src.NotiVisit" then
-			return getScreenMV()
-		elseif currentScene == "src.Message" then
-			return getScreenA()
-		elseif currentScene == "src.Visit" then
-			return getScreenV()
-		end
-		
-	end
+	---------------------------------------------------
+	--------- borbujas de notificaciones --------------
+	---------------------------------------------------
 	
 	function moveNoBubbleLeft()
 		if groupNoBubbleA then 
@@ -167,72 +159,49 @@ function Header:new()
 				txtNoBubbleA.text = totalBubbleA
 			end
 		else
-		
 			if groupNoBubbleA then
 				groupNoBubbleA:removeSelf()
 				groupNoBubbleA = nil
 			end
-			
-			
-		
 		end
 		
 		if totalBubbleV > 0 then
-		
 			if not groupNoBubbleV then
-			
 				groupNoBubbleV = display.newGroup()
 				groupNoBubbleV.y = h
-				--groupNoBubbleV.x = 300
-				--groupNoBubble:insert(getScreen())
-			
 				notBubble = display.newCircle( 440, 17, 10 )
 				notBubble:setFillColor(.1,.5,.1)
 				notBubble.strokeWidth = 2
 				notBubble:setStrokeColor(.8)
 				groupNoBubbleV:insert(notBubble)
-				
 				if txtNoBubbleV then txtNoBubbleV:removeSelf() txtNoBubbleV = nil end
-				
-				txtNoBubbleV = display.newText( {
-					x = 441, y = 17,
-					text = totalBubbleV, font = "Lato-Regular", fontSize = 12,
-				})
+					txtNoBubbleV = display.newText( {
+						x = 441, y = 17,
+						text = totalBubbleV, font = "Lato-Regular", fontSize = 12,
+					})
 				txtNoBubbleV:setFillColor( 1 )
-				--txtNoBubble:toFront()
 				groupNoBubbleV:insert(txtNoBubbleV)
-			
 			else
-				--txtNoBubbleV.text = totalBubbleV
 			end
 		else
-		
-			--[[txtNoBubbleV = display.newText( {
-				x = 441, y = 17,
-				text = "", font = "Lato-Regular", fontSize = 12,
-			})
-			txtNoBubbleV:setFillColor( 1 )]]
-		
 			if groupNoBubbleV then
 				groupNoBubbleV:removeSelf()
 				groupNoBubbleV = nil
 			end
-		
 		end
-		
 	end
+
+	-----------------------------------------
+	--------- eventos del menu --------------
+	-----------------------------------------
 	
 	--cierra la session del usuario
 	function SignOut( event )
-		
 		RestManager.deletePlayerIdOfUSer()
-		
 		return true
-		
 	end
 	
 	function SignOut2( )
-		
 		hideMenuLeft()
 		DBManager.clearUser()
 		Globals.scene = nil
@@ -240,8 +209,39 @@ function Header:new()
 		createNotBubble(0,0)
 		composer.removeScene("src.Login")
 		composer.gotoScene( "src.Login", { time = 400, effect = "slideLeft" })
-		
+		return true	
+	end
+	
+	function showSuggestions()
+		hideMenuLeft()
+		if composer.getSceneName( "current" ) ~= "src.Suggestions" then
+            composer.removeScene("src.Suggestions")
+			composer.gotoScene( "src.Suggestions", { time = 400, effect = "slideLeft" })
+			moveNoBubbleLeft()
+        end
 		return true
+	end
+	
+	-------------------------------------------------------
+	--------- eventos de movimiento de scena --------------
+	-------------------------------------------------------
+	
+	--obtenemos el grupo de cada escena
+	function getScreen()
+		local currentScene = composer.getSceneName( "current" )
+		if currentScene == "src.Home" then
+			return getScreenH()
+		elseif currentScene == "src.NotiMessage" then
+			return getScreenMA()
+		elseif currentScene == "src.NotiVisit" then
+			return getScreenMV()
+		elseif currentScene == "src.Message" then
+			return getScreenA()
+		elseif currentScene == "src.Visit" then
+			return getScreenV()
+		elseif currentScene == "src.Suggestions" then
+			return getScreenS()
+		end
 		
 	end
 	
@@ -284,6 +284,10 @@ function Header:new()
 		composer.gotoScene( "src.Home", { time = 400, effect = "slideRight" })
 		
 	end
+	
+	------------------------------------------------
+	--------- construcción de toolbar --------------
+	------------------------------------------------
 	
     -- Creamos la el toolbar
     function self:buildToolbar(homeScreen)
@@ -405,6 +409,10 @@ function Header:new()
 	
     return self
 end
+
+------------------------------------------------------------------
+---------- funcionalidad del boton atras de android --------------
+------------------------------------------------------------------
 
 -- Return button Android Devices
 local function onKeyEventBack( event )

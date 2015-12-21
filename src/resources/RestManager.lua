@@ -411,6 +411,43 @@ local RestManager = {}
 		
 	end
 	
+	--envia el mensaje de sugerencia
+	RestManager.sendSuggestion = function(subject,message)
+		local settings = DBManager.getSettings()
+        -- Set url
+        local url = settings.url
+        url = url.."api/saveSuggestion/format/json"
+        url = url.."/idApp/"..settings.idApp
+        url = url.."/subject/".. urlencode(subject)
+		url = url.."/message/".. urlencode(message)
+	
+        local function callback(event)
+            if ( event.isError ) then
+				getMessageSignIn("Error al enviar el mensaje", 2)
+            else
+                local data = json.decode(event.response)
+				if data then
+					if data.success then
+						getMessageSignIn(data.message, 1)
+						messageSent()
+					else
+						getMessageSignIn("Error al enviar el mensaje", 2)
+					end
+				else
+					getMessageSignIn("Error al enviar el mensaje", 2)
+				end
+            end
+			deleteLoadingLogin()
+			timeMarker = timer.performWithDelay( 2000, function()
+				deleteMessageSignIn()
+			end, 1 )
+            return true
+        end
+        -- Do request
+        network.request( url, "GET", callback )
+		
+	end
+	
 	--comprueba si existe conexion a internet
 	function networkConnection()
 		local netConn = require('socket').connect('www.google.com', 80)

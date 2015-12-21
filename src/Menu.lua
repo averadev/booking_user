@@ -10,16 +10,8 @@ function MenuLeft:new()
 	local intW = display.contentWidth
 	local intH = display.contentHeight
 	local h = display.topStatusBarContentHeight
-	--[[local rectCancun, rectPlaya
-	local lineLeft = {}]]
 
 	local selfL = display.newGroup()
-   --[[ local grpCity = display.newGroup()
-	local grpLanguage = display.newGroup()
-	
-	local rectCity = {}
-	
-	local rectLanguage = {}]]
 	
 	selfL.x = -480
 	
@@ -73,13 +65,45 @@ function MenuLeft:new()
 	end
 	
 	function builScreenLeftItems()
-	
-		local paintMenu = {
-			type = "gradient",
-			color1 = { 5/255, 27/255, 64/255 },
-			color2 = { 7/255, 18/255, 48/255},
-			direction = "right"
-		}
+		
+		-- boton quejas y sugerencias
+		local bgSuggestions = display.newRect( 0, 255 + h, 350, 120 )
+		bgSuggestions.anchorX = 0
+        bgSuggestions.anchorY = 0
+		bgSuggestions:setFillColor( 230/255 )
+		bgSuggestions.alpha = 1
+		bgSuggestions:addEventListener( "tap", showSuggestions )
+		selfL:insert(bgSuggestions)
+		
+		local imgBtnSuggestions = display.newImage( "img/btn/quejasSugerencias.png" )
+		imgBtnSuggestions.anchorX = 0
+		imgBtnSuggestions.anchorY = 0
+        imgBtnSuggestions.x= 20
+        imgBtnSuggestions.y = 295 + h
+        selfL:insert( imgBtnSuggestions )
+		
+		txtTitleSuggestions = display.newText( {
+			text = "Quejas y sugerencias a administracion",
+            x = 205, y = 315 + h,
+			width = 350, align = "center",
+            font = "Lato-Regular", fontSize = 24, 
+        })
+        txtTitleSuggestions:setFillColor( 0, 30/255, 120/255 )
+        selfL:insert(txtTitleSuggestions)
+		
+		local lineMenu1 = display.newRect( 0, 255 + h, 350, 2 )
+        lineMenu1.anchorX = 0
+        lineMenu1.anchorY = 0
+        lineMenu1:setFillColor( 29/255, 27/255, 117/255 )
+        selfL:insert(lineMenu1)
+		
+		local lineMenu2 = display.newRect( 0, 375 + h, 350, 2 )
+        lineMenu2.anchorX = 0
+        lineMenu2.anchorY = 0
+        lineMenu2:setFillColor( 29/255, 27/255, 117/255 )
+        selfL:insert(lineMenu2)
+		
+		-- boton logout
 		
 		local bgSignOut = display.newRect( 0, intH-90 + h, 350, 90 )
 		bgSignOut.anchorX = 0

@@ -16,72 +16,73 @@ local colorSuccess = {68/255, 157/255, 68/255}
 local colorDanger = {201/255, 48/255, 44/255}
 local colorWarning = {236/255, 151/255, 31/255}
 
-local messageConfirmAdmin
+local messageConfirm
 local grpMessageLogin
 
 function NewAlert( title ,message, typeAL)
 
-	if not messageConfirmAdmin then
+	if not messageConfirm then
     
 		local midW = display.contentWidth / 2
 		local midH = display.contentHeight / 2
 		local intW = display.contentWidth
 		local intH = display.contentHeight
-		messageConfirmAdmin = display.newGroup()
+		messageConfirm = display.newGroup()
         
-		local bgShade = display.newRect( midW, midH, display.contentWidth, display.contentHeight )
+		local bgShade = display.newRect( midW, midH + h, intW, intH )
 		bgShade:setFillColor( 0, 0, 0, .3 )
-		messageConfirmAdmin:insert(bgShade)
+		messageConfirm:insert(bgShade)
 		bgShade:addEventListener( 'tap', sinAction)
         
-		local bg = display.newRoundedRect( midW, midH, 600, 400, 10 )
-		bg:setFillColor( 6/255, 24/255, 46/255, .8)
-		messageConfirmAdmin:insert(bg)
+		local bg = display.newRoundedRect( midW, 150, 400 + h, 400, 10 )
+		bg.anchorY = 0
+		bg:setFillColor( 6/255, 24/255, 46/255)
+		messageConfirm:insert(bg)
 		
-		local lineRecordVisit = display.newLine( intW/2 - 275, 380, intW/2 + 275, 380 )
+		local lineRecordVisit = display.newLine( intW/2 - 200, 310 + h, intW/2 + 200, 310 + h )
 		lineRecordVisit:setStrokeColor( 225/255, 0, 4/255 )
 		lineRecordVisit.strokeWidth = 4
 		lineRecordVisit.y = lineRecordVisit.y - bg.contentHeight/4
-		messageConfirmAdmin:insert(lineRecordVisit)
+		messageConfirm:insert(lineRecordVisit)
 		
 		local labelTitleNewAlert = display.newText( {   
-			x = midW, y = midH,
-			text = title,  font = fontDefault, fontSize = 32, align = "center",
+			x = midW, y = 320 + h,
+			text = title,  font = fontDefault, fontSize = 30, align = "center",
 		})
 		labelTitleNewAlert:setFillColor( 1 )
 		labelTitleNewAlert.y = labelTitleNewAlert.y - bg.contentHeight/2 + 50
-		messageConfirmAdmin:insert(labelTitleNewAlert)
+		messageConfirm:insert(labelTitleNewAlert)
 	
 		local labelMessageNewAlert = display.newText( {   
-			x = midW, y = midH - 65,
-			width = 550,
+			x = midW, y = 250 + h,
+			width = 380, height = 300,
 			text = message,  font = fontDefault, fontSize = 24, align = "center",
 		})
 		labelMessageNewAlert:setFillColor( 1 )
 		labelMessageNewAlert.y = labelMessageNewAlert.y + labelMessageNewAlert.contentHeight/2
-		messageConfirmAdmin:insert(labelMessageNewAlert)
+		messageConfirm:insert(labelMessageNewAlert)
 		
 		if typeAL == 1 then
 			
-			local btnCloseNewAlert = display.newRoundedRect( midW, midH + 150, 200, 60, 10 )
+			local btnCloseNewAlert = display.newRoundedRect( midW, 480 + h, 200, 60, 10 )
 			btnCloseNewAlert:setFillColor( 51/255, 176/255, 46/255)
-			messageConfirmAdmin:insert(btnCloseNewAlert)
+			messageConfirm:insert(btnCloseNewAlert)
 			btnCloseNewAlert:addEventListener( 'tap', deleteNewAlert)
 			
 			local labelMessageNewAlert = display.newText( {   
-				x = midW, y = midH + 135,
-				text = "ACEPTAR",  font = fontDefault, fontSize = 26, align = "center",
+				x = midW, y = 467 + h,
+				text = "ACEPTAR",  font = fontDefault, fontSize = 24, align = "center",
 			})
 			labelMessageNewAlert:setFillColor( 1 )
 			labelMessageNewAlert.y = labelMessageNewAlert.y + labelMessageNewAlert.contentHeight/2
-			messageConfirmAdmin:insert(labelMessageNewAlert)
+			messageConfirm:insert(labelMessageNewAlert)
 			
 		end
 		
 	else
 	
-		messageConfirmAdmin:removeSelf()
-		messageConfirmAdmin = nil
+		messageConfirm:removeSelf()
+		messageConfirm = nil
 		NewAlert(title, message, typeAL)
 		
 	end
@@ -89,9 +90,13 @@ function NewAlert( title ,message, typeAL)
 end
 
 function deleteNewAlert()
-	if messageConfirmAdmin then
-		messageConfirmAdmin:removeSelf()
-		messageConfirmAdmin = nil
+	if messageConfirm then
+		messageConfirm:removeSelf()
+		messageConfirm = nil
+	end
+	local composer = require( "composer" )
+	if composer.getSceneName( "current" ) == "src.Suggestions" then
+		moveGrpTextField(2)
 	end
 end
 
