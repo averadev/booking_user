@@ -197,13 +197,17 @@ function scene:create( event )
 	
 	local condoInfo = DBManager.getCondominiumById(settings.condominioId)
 	
-	labelNumCondo  = display.newText( {   
-         x = 100, y = h + 88,
-		width = 100, align = 'center',
-        text = condoInfo.nombre,  font = fontLatoBold, fontSize = 22,
-	})
-	labelNumCondo:setFillColor( 0 )
-	homeScreen:insert(labelNumCondo)
+	if condoInfo ~= 1 then
+		labelNumCondo  = display.newText( {   
+			x = 100, y = h + 88,
+			width = 100, align = 'center',
+			text = condoInfo.nombre,  font = fontLatoBold, fontSize = 22,
+		})
+		labelNumCondo:setFillColor( 0 )
+		homeScreen:insert(labelNumCondo)
+	else
+		RestManager.deletePlayerIdOfUSer()
+	end
 	
 	local lineMenu = display.newRect( 0, h + 65 + 48, display.contentWidth, 1 )
 	lineMenu.anchorX = 0
@@ -216,11 +220,10 @@ function scene:create( event )
     header.y = h
     header:buildToolbar()
 	
+	
+	
 	local residencial = DBManager.getResidencial()
 	local telAdministracion, telCaseta, telLobby
-	--residencial.telAdministracion
-	--residencial.telCaseta
-	--residencial.telLobby
 	if residencial ~= 0 then
 		telAdministracion = residencial[1].telAdministracion
 		telCaseta = residencial[1].telCaseta

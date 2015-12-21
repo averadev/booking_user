@@ -61,6 +61,7 @@ function Header:new()
 		screen = nil
 		menuActive = true
 		if composer.getSceneName( "current" ) == "src.Suggestions" then
+			native.setKeyboardFocus( nil )
 			moveGrpTextField(1)
         end
 		return true
