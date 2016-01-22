@@ -18,6 +18,7 @@ if not isUser then
 	composer.gotoScene("src.Login")
 else
 	composer.gotoScene("src.Home")
+	--composer.gotoScene("src.Suggestions")
 end
 
 function DidReceiveRemoteNotification(message, additionalData, isActive)
