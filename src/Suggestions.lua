@@ -61,7 +61,6 @@ function sendSendSuggestion( event )
 	if txtSubject.text ~='' and txtMessage.text ~= '' then
 		getLoadingLogin(600,"Enviando...")
 		btnSendSuggestion:removeEventListener( 'tap', sendSendSuggestion )
-		--RestManager.sendSuggestion('hola','como estas')
 		RestManager.sendSuggestion(txtSubject.text,txtMessage.text)
 	else
 		NewAlert('Plantec Resident','Campos vacios',1)
