@@ -17,7 +17,10 @@ local isUser = DBManager.setupSquema()
 if not isUser then
 	composer.gotoScene("src.Login")
 else
-	composer.gotoScene("src.Home")
+	--composer.gotoScene("src.Home")
+    composer.gotoScene( "src.Visit", {
+        params = { id = 137 }
+    })
 	--composer.gotoScene("src.Suggestions")
 end
 
