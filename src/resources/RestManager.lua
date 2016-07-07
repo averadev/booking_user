@@ -236,6 +236,27 @@ local RestManager = {}
         network.request( url, "GET", callback )
 		
 	end
+
+    --marca el mesaje como leidos
+	RestManager.updateVisitAction = function(idMSG, action)
+		
+		local settings = DBManager.getSettings()
+        -- Set url
+        local url = settings.url
+        url = url.."api/updateVisitAction/format/json"
+        url = url.."/idMSG/".. idMSG
+        url = url.."/action/".. action
+	
+        local function callback(event)
+            if ( event.isError ) then
+            else
+            end
+            return true
+        end
+        -- Do request
+        network.request( url, "GET", callback )
+		
+	end
 	
 	--obtiene los mensajes de visitantes
 	RestManager.getMessageToVisit = function()
@@ -276,7 +297,7 @@ local RestManager = {}
         url = url.."api/getMessageToVisitById/format/json"
         url = url.."/idApp/"..settings.idApp
         url = url.."/idMSG/".. id
-	
+	    
         local function callback(event)
             if ( event.isError ) then
             else

@@ -17,10 +17,7 @@ local isUser = DBManager.setupSquema()
 if not isUser then
 	composer.gotoScene("src.Login")
 else
-	--composer.gotoScene("src.Home")
-    composer.gotoScene( "src.Visit", {
-        params = { id = 137 }
-    })
+	composer.gotoScene("src.Home")
 	--composer.gotoScene("src.Suggestions")
 end
 
@@ -62,7 +59,7 @@ end
 local OneSignal = require("plugin.OneSignal")
 -- Uncomment SetLogLevel to debug issues.
 -- OneSignal.SetLogLevel(4, 4)
-OneSignal.Init("d55cca2a-694c-11e5-b9d4-c39860ec56cd", 368044900698, DidReceiveRemoteNotification)
+OneSignal.Init("d55cca2a-694c-11e5-b9d4-c39860ec56cd", 215994349515, DidReceiveRemoteNotification)
 
 function IdsAvailable(userID, pushToken)
     Globals.playerIdToken = userID
